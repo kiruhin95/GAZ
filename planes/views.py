@@ -663,3 +663,5 @@ def add(request, finance_cost_id, year):
 
             # return reverse('planes', kwargs={'year': year})
     return render(request, './planes/add.html', response)
+
+print(444)
