@@ -7,16 +7,16 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script src={%static "script.js"%}></script>
+  <script src="{%static 'script.js'%}"></script>
 
-<div class="container-fluid">
-  <h1> Анализ отклонений</h1>
-  <h4>По статье финансирования {{finance_cost_title}}, по куратору {{curator_title}} за {{year}} год</h4>
+<div class="container-fluid" id="HTMLtoPDF">
+  <h1 class="print output"> Анализ отклонений</h1>
+  <h4 class="print output">По статье финансирования {{finance_cost_title}}, по куратору {{curator_title}} за {{year}} год</h4>
 
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-7 print output">
 
-          <table   class="table-responsive" border="1">
+          <table   class="table-responsive" style="font-size:1vw;" id="table_id">
 
     <tr>
         <th> Показатель </th>
@@ -63,13 +63,13 @@
 
 
 </table>
-                <div class="chart-container" style="position: relative">
+                <div class="chart-container print output" style="position: relative">
 
 <canvas id="myChart" ></canvas></div>
 
     </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-4" data-html2canvas-ignore="true">
                   <form action="{% url 'analytics:deviation_analysis'  %}" method="get" name="filter" class="form-group">
     <p><label for="year">Отчетный год </label>
         <select id="year" size="1" name="select_year" class="form-control" >
@@ -106,17 +106,71 @@
       </div>
   </div>
 
-    <div class="row">
+
+
+    <div class="row" data-html2canvas-ignore="true">
         <div class="col-sm-6" ></div>
         <div class="col-sm-6">
-            <button type="button" >Печать</button>
-            <button type="button" >Отправить</button>
-            <button type="button" >Сохранить</button>
-            <button type="button" >
-                <a href="{% url 'analytics:analytics' %}">Назад</a></button>
+            <button type="button" onclick="javascript:window.print()" class="btn btn-primary">Печать</button>
+            <button type="button" onclick="javascript:window.open('mailto:test@example.com');" class="btn btn-primary">Отправить</button>
+
+            <div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+       Сохранить
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" type="button" onclick="exportToExcel('table_id', 'user-data')">Excel</a>
+      <a class="dropdown-item" type="button" onclick="generatePDF()">PDF</a>
+    </div>
+  </div>
+                <a type="button" class="btn btn-primary active" href="{% url 'analytics:analytics' %}">
+                Назад</a>
         </div>
     </div>
 </div>
+
+<style>
+    @media print{
+    body{
+    visibility:hidden;
+    }
+    .print{
+    visibility:visible;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src={%static "script.js"%} ></script>
+
+
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+  <script src={%static "html2canvas.js"%} ></script>
+
+    <script src={%static "html2pdf.bundle.min.js"%} ></script>
+
+    <script>
+      function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("HTMLtoPDF");
+        const form = document.getElementById("form")
+        const opt = {
+        html2canvas: {scale:2, ignoreElements:form},
+        jsPDF: {unit:'mm', format:'a4', orientation: 'l'}};
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .save();
+      }
+    </script>
+
+
+
+
+
+
+
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
