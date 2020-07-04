@@ -153,7 +153,9 @@ AUTHENTICATION_BACKENDS = [
     'planes.EmailBackend.CustomBackend'
     ]
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+PUBLIC_DIR = 'public'
+STATIC_ROOT = os.path.join(BASE_DIR, PUBLIC_DIR, 'static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
