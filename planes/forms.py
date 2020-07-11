@@ -24,13 +24,21 @@ class RegisterForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField(required=True)
 
-
+from django.contrib.admin.widgets import AdminDateWidget
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         exclude = []
         widgets = {
-            'title': forms.TextInput(attrs={'placeholder':'введите название'})
+            'title': forms.TextInput(attrs={'placeholder':'введите название'}),
+            # 'plan_load_date_ASEZ': forms.SelectDateWidget(
+            #     empty_label=("Choose Year", "Choose Month", "Choose Day")),
+            'plan_load_date_ASEZ': forms.TextInput(attrs={'type': 'date'}),
+            'fact_load_date_ASEZ': forms.TextInput(attrs={'type': 'date'}),
+            'plan_sign_date': forms.TextInput(attrs={'type': 'date'}),
+            'fact_sign_date': forms.TextInput(attrs={'type': 'date'}),
+            'start_date': forms.TextInput(attrs={'type': 'date'}),
+            'end_time': forms.TextInput(attrs={'type': 'date'}),
         }
 
 
