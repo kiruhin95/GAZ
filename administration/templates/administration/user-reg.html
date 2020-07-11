@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+
+{% block styles %}
+{% endblock styles %}
+
+
+{% block content %}
+    <div id="data-container">
+        <form method="POST" id="form1">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+    </div>
+
+    <div class="buttons-container">
+        <button type="submit" form="form1" value="Submit" class="button">
+            Сохранить
+        </button>
+        <button class="button" onclick="window.location.href='/administration/';">Назад</button>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+{% endblock scripts %}

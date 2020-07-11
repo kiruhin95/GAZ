@@ -2,6 +2,12 @@
 
 {% load static %}
 
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}">
+{% endblock styles %}
+
+
 {% block content %}
 
 {#    <div class="container">#}
@@ -15,44 +21,49 @@
     <div id="data-container">
 
 {#    <div class="notifications-list-container">#}
-            <table class="notification-table">
+            <table class="notification-table" id="myTable">
 
-                <tr>
-                    <td class="notification-status not-default">
-{#                        <div class="td-containers">#}
-{#                        </div>#}
-                    </td>
-                    <td class="notification-date not-default bold">
-{#                        <div class="td-containers">#}
-                        <div>Дата</div>
-                    </td>
-                    <td class="notification-cell not-default bold">
-{#                        <div class="td-containers">#}
-                        <div>Уведомление</div>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td class="notification-status not-default">
+    {#                        <div class="td-containers">#}
+    {#                        </div>#}
+                        </td>
+                        <td class="notification-date not-default bold">
+    {#                        <div class="td-containers">#}
+                            <div>Дата</div>
+                        </td>
+                        <td class="notification-cell not-default bold">
+    {#                        <div class="td-containers">#}
+                            <div>Уведомление</div>
+                        </td>
+                    </tr>
+                </thead>
 {#                --------------------------#}
 
-                {% for note in notes_list %}
-                <tr>
-                    <td class="notification-status">
-{#                        <div class="td-containers ">#}
-                            <div><input type="checkbox" name="" id=""></div>
-{#                        </div>#}
-                    </td>
-                    <td class="notification-date">
-                        <div class="td-containers active-not-cont">
-                            {{ note.date }}
-                        </div>
-                    </td>
-                    <td class="notification-cell">
-                        <div class="td-containers active-not-cont">
-                            {{ note.text }}
-                        </div>
-                    </td>
+                <tbody>
+                    {% for note in notes_list %}
+                    <tr>
+                        <td class="notification-status">
+    {#                        <div class="td-containers ">#}
+                                <div><input type="checkbox" name="" id=""></div>
+    {#                        </div>#}
+                        </td>
+                        <td class="notification-date">
+                            <div class="td-containers active-not-cont">
+                                {{ note.date }}
+                            </div>
+                        </td>
+                        <td class="notification-cell">
+                            <div class="td-containers active-not-cont">
+                                {{ note.text }}
+                            </div>
+                        </td>
 
-                </tr>
-                {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
             </table>
 {#    </div>#}
 
@@ -64,3 +75,42 @@
     </div>
 
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'js/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                language: {
+                    "processing": "Подождите...",
+                    "search": "Поиск:",
+                    "lengthMenu": "Показать _MENU_ записей",
+                    "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                    "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                    "infoPostFix": "",
+                    "loadingRecords": "Загрузка записей...",
+                    "zeroRecords": "Записи отсутствуют.",
+                    "emptyTable": "В таблице отсутствуют данные",
+                    "paginate": {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                    "aria": {
+                        "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                        "sortDescending": ": активировать для сортировки столбца по убыванию"
+                    },
+                    "select": {
+                        "rows": {
+                            "_": "Выбрано записей: %d",
+                            "0": "Кликните по записи для выбора",
+                            "1": "Выбрана одна запись"
+                        }
+                    }
+                }
+            });
+        } );
+    </script>
+{% endblock scripts %}

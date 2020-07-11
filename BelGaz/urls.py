@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('', include('planes.urls', namespace='planes')),
     path('plane/', include('planes.urls', namespace='planes')),
+    path('administration/', include('administration.urls', namespace='administration')),
     path('catalog/', include('catalog.urls', namespace='catalog')),
     path('analytics/', include('analytics.urls', namespace='analytics')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
