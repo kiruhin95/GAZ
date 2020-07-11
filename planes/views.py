@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.apps import apps
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from .forms import (
@@ -36,6 +37,7 @@ from .models import (
     ContractStatus,
     Counterpart,
     ActivityForm,
+    Currency
 )
 from django.urls import reverse
 import json
@@ -45,6 +47,38 @@ import math
 from decimal import *
 import pandas as pd
 import numpy as np
+
+
+user_rights = {}
+user_rights['lawyers'] = [
+    'id',  # id need course you can create new or etc
+    'contract_mode',
+    'number_ppz',
+    'contract_status',
+    'register_number_SAP',
+    'contract_number',
+    'fact_sign_date',
+    'start_date',
+    'end_time',
+    'counterpart',
+    'related_contract'
+]
+user_rights['economists'] = [
+    'id',
+    'finance_cost',
+    'activity_form',
+]
+user_rights['spec_ASEZ'] = [
+    'id',
+    'purchase_type',
+    'number_ppz',
+    'number_PZTRU',
+    'stateASEZ',
+    'plan_load_date_ASEZ',
+    'fact_load_date_ASEZ',
+    'currency',
+    'number_KGG',
+]
 
 
 @login_required
@@ -131,10 +165,12 @@ class ContractView(View):
     cont['all_pztru'] = NumberPZTRU.objects.all()
     cont['all_cont_suatus'] = ContractStatus.objects.all()
     cont['all_counterparts'] = Counterpart.objects.all()
+    cont['all_activity_forms'] = ActivityForm.objects.all()
+    cont['all_currenses'] = Currency.objects.all()
+
 
     def get(self, request):
         context = self.cont.copy()
-
         if request.GET.__contains__('search_name'):
             print(request.GET)
             contracts = self.search(request)
@@ -221,6 +257,9 @@ class ContractView(View):
             )
         return contract_and_sum
 
+    def change_in_table(self, contract_id):
+
+        return None
 
 class DeletedContracts(View):
     ''' render deleted contracts and allow to recover contract '''
@@ -268,6 +307,22 @@ class ContractFabric(View):
         "3quart",
         "4quart",
     ]
+    fk_model = {
+            # "contract":Contract,
+            # "sum_byn":SumsBYN,
+            # "sum_rur":SumsRUR,
+            "curator":Curator,
+            "finance_cost":FinanceCosts,
+            "contract_type":ContractType,
+            "contract_mode":ContractMode,
+            "purchase_type":PurchaseType,
+            "stateASEZ":StateASEZ,
+            "number_PZTRU":NumberPZTRU,
+            "contract_status":ContractStatus,
+            "counterpart":Counterpart,
+            "activity_form":ActivityForm,
+            "currency":Currency
+    }
 
     def get(self, request, contract_id=None):
         if request.GET.__contains__('from_ajax'):
@@ -275,6 +330,42 @@ class ContractFabric(View):
                 contract_id_list = request.GET.getlist('choosed[]')
                 Contract.objects.filter(id__in=contract_id_list).update(contract_active=False)
                 return HttpResponse('this is delete contract')
+            if request.GET['from_ajax'] == 'change_table':
+                contract_id = request.GET['contract_id[]']
+                q_dic = {
+                    'contract': Contract.objects.get(id=contract_id),
+                    'sum_byn': SumsBYN.objects.filter(contract__id=contract_id),
+                    'sum_rur': SumsRUR.objects.get(contract__id=contract_id)
+                }
+
+                dic = dict(request.GET)
+                for key in dic:
+                    if 'up_data' in key:
+                        #  print(key)
+                        info = key.replace('up_data', '').replace('[', '').replace(']','')
+                        info = info.split('.')  # first - model, second - submodel (if exists), third - FK
+                        val = dic[key][0]
+
+                        if info[1] != 'number_ppz':
+                            if 'date' not in info[1]:
+                                val = int(val)
+                            else:
+                                pass  # todo iso time field
+                        else:
+                            val = str(val)
+
+                        if len(info) !=2 :
+                            quart = info[1]
+                            this_model = q_dic[info[0]].get(period=quart)
+                        else:
+                            this_model = q_dic[info[0]]
+                        try:
+                            new_fk_value = self.fk_model[info[-1]].objects.get(id=val)
+                        except:
+                            new_fk_value = val
+                        setattr(this_model, info[-1], new_fk_value)
+                        this_model.save()  # TODO put it at the end
+                return HttpResponse('this is changing contract from the table')
 
         if request.GET.__contains__('pattern_contract_id'):
             contract_id = int(request.GET['pattern_contract_id'])
@@ -282,7 +373,7 @@ class ContractFabric(View):
         contract_mode_flag = False
         finance_cost_flag = False
         activity_form_flag = False
-        cant_do_this = []
+        cant_do_this = []  # TDOD remove if it is in def
 
         if not contract_id:
             ''' Create new contract with initial sumBYN and sumRUR'''
@@ -301,8 +392,8 @@ class ContractFabric(View):
                 queryset=contract_sum_byn.filter(period__in=self.quarts),
                 prefix='quarts'
             )
-            for form in formset_months:  # this is props for month fields
-                pass
+            # for form in formset_months:  # this is props for month fields
+            #     pass
 
         else:
             SumBYNFormSet_months = modelformset_factory(SumsBYN, SumsBYNForm_months, extra=0)  # Берет ИЗ БД
@@ -335,37 +426,6 @@ class ContractFabric(View):
             block_list = [getattr(i, 'name') for i in Contract._meta.fields]
 
             user_groups = request.user.groups.all()
-            user_rights = {}
-            user_rights['lawyers'] = [
-                'id',  # id need course you can create new or etc
-                'contract_mode',
-                'number_ppz',
-                'contract_status',
-                'register_number_SAP',
-                'contract_number',
-                'fact_sign_date',
-                'start_date',
-                'end_time',
-                'counterpart',
-                'related_contract'
-            ]
-            user_rights['economists'] = [
-                'id',
-                'finance_cost',
-                'activity_form',
-            ]
-            user_rights['spec_ASEZ'] = [
-                'id',
-                'purchase_type',
-                'number_ppz',
-                'number_PZTRU',
-                'stateASEZ',
-                'plan_load_date_ASEZ',
-                'fact_load_date_ASEZ',
-                'currency',
-                'number_KGG',
-            ]
-
             this_user_in_groups = [i.name for i in user_groups]
             this_user_can_do = []
             for i in this_user_in_groups:
@@ -477,6 +537,8 @@ class ContractFabric(View):
                     )
             return redirect(reverse('planes:contracts'))
         else:
+            print(sum_rur_form.errors)
+            print(contract_form.errors)
             print( sum_rur_form.is_valid(),
                    contract_form.is_valid(),
                    sum_byn_year_form.is_valid(),
@@ -765,3 +827,8 @@ class parse_excel(View):
         except:  # TODO filler ny it
             res = model.objects.get(id=1)
         return res
+
+
+def test(request):
+    print(request.GET)
+    return HttpResponse()

@@ -69,8 +69,8 @@
     </div>
 
       <div class="col-sm-4" data-html2canvas-ignore="true">
-                  <form action="{% url 'analytics:deviation_analysis'  %}" method="get" name="filter" class="form-group">
-    <p><label for="year">Отчетный год </label>
+          <form action="{% url 'analytics:deviation_analysis'  %}" method="get" name="filter" class="form-group">
+            <p><label for="year">Отчетный год </label>
         <select id="year" size="1" name="select_year" class="form-control form-deviation" >
         {% for year in years %}
             <option id="year_option" selected="selected"> {{year}} </option>
@@ -97,7 +97,6 @@
         <option id="report_option" value={{id}} selected="selected">{{report}}</option>
         {% endfor %}
     </select></p>
-
 
             <input type="submit" class="form_submit" value="OK" >
 

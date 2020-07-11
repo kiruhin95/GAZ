@@ -3,8 +3,6 @@
 
 {% block content %}
 
-    <div id="data-container">
-
 <table border="1">
     <tr>
         <th>Наименование (предмет) договора, <br>доп соглашения к договору <br>СОДЕРЖАНИЕ РАБОТ</th>
@@ -101,108 +99,226 @@
     </tr>
 
     {% for con_sum in contract_and_sum %}
-        <tr>
-            <td><input type="checkbox" value="{{ con_sum.contract.id }}" class="contract_choice"><a href="{{ con_sum.contract.get_absolute_url }}" id="{{ con_sum.contract.id }}">{{ con_sum.contract.title }}</a></td>
-            <td>{{ con_sum.contract.finance_cost }}</td>
-            <td>{{ con_sum.contract.activity_form }}</td>
-            <td>{{ con_sum.contract.curator }}</td>
-            <td>{{ con_sum.contract.contract_type }}</td>
-            <td>{{ con_sum.contract.contract_mode }}</td>
-            <td>{{ con_sum.contract.purchase_type }}</td>
-            <td>{{ con_sum.contract.number_ppz }}</td>
-            <td>{{ con_sum.contract.stateASEZ }}</td>
-            <td>{{ con_sum.contract.number_PZTRU }}</td>
-            <td>{{ con_sum.contract.contract_status }}</td>
-            <td>{{ con_sum.contract.plan_load_date_ASEZ }}</td>
-            <td>{{ con_sum.contract.fact_load_date_ASEZ }}</td>
-            <td>{{ con_sum.sum_rur.start_max_price_ASEZ_NDS.amount }}</td>
-            <td>{{ con_sum.sum_rur.currency_rate_on_load_date_ASEZ_NDS.amount }}</td>
-            <td>{{ con_sum.sum_rur.contract_sum_NDS_RUB.amount }}</td>
-            <td>{{ con_sum.sum_rur.currency }}</td>
-            <td>{{ con_sum.sum_rur.delta_data_ASEZ.amount }}</td>
-            <td>{{ con_sum.contract.number_KGG }}</td>
+        <tr id="table_{{ con_sum.contract.id }}">
+            <td>
+                <input type="checkbox" value="{{ con_sum.contract.id }}" class="contract_choice">
+                <a href="{{ con_sum.contract.get_absolute_url }}" id="{{ con_sum.contract.id }}">{{ con_sum.contract.title }}</a>
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.finance_cost }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.finance_cost">
+                    <option value="0">{{ con_sum.contract.finance_cost }}</option>
+                    {% for fin_cost in all_fin_costs %}
+                        <option value="{{ fin_cost.id }}">{{ fin_cost }}</option>
+                    {% endfor %}
+                </select>
+
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.activity_form }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.activity_form">
+                    <option value="0">{{ con_sum.contract.activity_form }}</option>
+                    {% for activity_form in all_activity_forms %}
+                        <option value="{{ activity_form.id }}">{{ activity_form }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.curator }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.curator">
+                    <option value="0">{{ con_sum.contract.curator }}</option>
+                    {% for curator in all_curators %}
+                        <option value="{{ curator.id }}">{{ curator }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.contract_type }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.contract_type">
+                    <option value="0">{{ con_sum.contract.contract_type }}</option>
+                    {% for contract_type in all_contract_types %}
+                        <option value="{{ contract_type.id }}">{{ contract_type }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.contract_mode }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.contract_mode">
+                    <option value="0">{{ con_sum.contract.contract_mode }}</option>
+                    {% for contract_mode in all_contract_modes %}
+                        <option value="{{ contract_mode.id }}">{{ contract_mode }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.purchase_type }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.purchase_type">
+                    <option value="0">{{ con_sum.contract.purchase_type }}</option>
+                    {% for purchase_type in all_purchase_types %}
+                        <option value="{{ purchase_type.id }}">{{ purchase_type }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input readonly name="contract.number_ppz" value="{{ con_sum.contract.number_ppz }}"></td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.stateASEZ }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.stateASEZ">
+                    <option value="0">{{ con_sum.contract.stateASEZ }}</option>
+                    {% for stateASEZ in all_state_asez %}
+                        <option value="{{ stateASEZ.id }}">{{ stateASEZ }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.number_PZTRU }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.number_PZTRU">
+                    <option value="0">{{ con_sum.contract.number_PZTRU }}</option>
+                    {% for number_PZTRU in all_pztru %}
+                        <option value="{{ number_PZTRU.id }}">{{ number_PZTRU }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+                  <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.contract_status }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.contract_status">
+                    <option value="0">{{ con_sum.contract.contract_status }}</option>
+                    {% for contract_status in all_cont_suatus %}
+                        <option value="{{ contract_status.id }}">{{ contract_status }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input readonly name="contract.plan_load_date_ASEZ" value="{{ con_sum.contract.plan_load_date_ASEZ.isoformat }}"></td>
+            <td><input readonly name="contract.fact_load_date_ASEZ" value="{{ con_sum.contract.fact_load_date_ASEZ.isoformat }}"></td>
+            <td><input readonly name="sum_rur.start_max_price_ASEZ_NDS" value="{{ con_sum.sum_rur.start_max_price_ASEZ_NDS }}"></td>
+            <td><input readonly name="sum_rur.currency_rate_on_load_date_ASEZ_NDS" value="{{ con_sum.sum_rur.currency_rate_on_load_date_ASEZ_NDS }}"></td>
+            <td><input readonly name="sum_rur.contract_sum_NDS_RUB" value="{{ con_sum.sum_rur.contract_sum_NDS_RUB }}"></td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.sum_rur.currency }}
+                </div>
+                <select hidden class="choiser_FK" name="sum_rur.currency">
+                    <option value="0">{{ con_sum.sum_rur.currency }}</option>
+                    {% for currency in all_currenses %}
+                        <option value="{{ currency.id }}">{{ currency }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input readonly name="sum_rur.delta_data_ASEZ" value="{{ con_sum.sum_rur.delta_data_ASEZ }}"></td>
+            <td><input readonly name="contract.number_KGG" value="{{ con_sum.contract.number_KGG }}"></td>
+            <td class="calc" bgcolor="red"><input readonly value="{{ con_sum. }}"></td>
+            <td><input readonly name="sum_byn.1quart.plan_sum_SAP" value="{{ con_sum.sum_byn.1quart.plan_sum_SAP }}"></td>
+            <td><input readonly name="sum_byn.2quart.plan_sum_SAP" value="{{ con_sum.sum_byn.2quart.plan_sum_SAP }}"></td>
+            <td><input readonly name="sum_byn.3quart.plan_sum_SAP" value="{{ con_sum.sum_byn.3quart.plan_sum_SAP }}"></td>
+            <td><input readonly name="sum_byn.4quart.plan_sum_SAP" value="{{ con_sum.sum_byn.4quart.plan_sum_SAP }}"></td>
+            <td><input readonly name="contract.register_number_SAP" value="{{ con_sum.contract.register_number_SAP }}"></td>
+            <td><input readonly name="contract.contract_number" value="{{ con_sum.contract.contract_number }}"></td>
+            <td><input readonly name="contract.plan_sign_date" value="{{ con_sum.contract.plan_sign_date.isoformat }}"></td>
+            <td><input readonly name="contract.fact_sign_date" value="{{ con_sum.contract.fact_sign_date.isoformat }}"></td>
+            <td><input readonly name="contract.start_date" value="{{ con_sum.contract.start_date.isoformat }}"></td>
+            <td><input readonly name="contract.end_time" value="{{ con_sum.contract.end_time }}"></td>
+            <td>
+                <div class="choiser_FK">
+                    {{ con_sum.contract.counterpart }}
+                </div>
+                <select hidden class="choiser_FK" name="contract.counterpart">
+                    <option value="0">{{ con_sum.contract.counterpart }}</option>
+                    {% for counterpart in all_counterparts %}
+                        <option value="{{ counterpart.id }}">{{ counterpart }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="calc" bgcolor="red">{{ con_sum.sum_byn.contract_sum_without_NDS_BYN }}</td>
+            <td><input readonly name="sum_byn.1quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.1quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input readonly name="sum_byn.2quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input readonly name="sum_byn.3quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input readonly name="sum_byn.4quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td>{{ con_sum.sum_byn.1quart.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.sum_byn.2quart.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.sum_byn.3quart.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.sum_byn.4quart.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.contract.register_number_SAP }}</td>
-            <td>{{ con_sum.contract.contract_number }}</td>
-            <td>{{ con_sum.contract.plan_sign_date }}</td>
-            <td>{{ con_sum.contract.fact_sign_date }}</td>
-            <td>{{ con_sum.contract.start_date }}</td>
-            <td>{{ con_sum.contract.end_time }}</td>
-            <td>{{ con_sum.contract.counterpart }}</td>
-            <td class="calc" bgcolor="red">{{ con_sum.sum_byn.contract_sum_without_NDS_BYN.amount }}</td>
-            <td>{{ con_sum.sum_byn.1quart.contract_sum_without_NDS_BYN.amount }}</td>
-            <td>{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN.amount }}</td>
-            <td>{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN.amount }}</td>
-            <td>{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN.amount }}</td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
+            <td><input readonly name="sum_byn.jan.forecast_total" value="{{ con_sum.sum_byn.jan.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.feb.forecast_total" value="{{ con_sum.sum_byn.feb.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.mar.forecast_total" value="{{ con_sum.sum_byn.mar.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.1quart.forecast_total" value="{{ con_sum.sum_byn.1quart.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.apr.forecast_total" value="{{ con_sum.sum_byn.apr.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.may.forecast_total" value="{{ con_sum.sum_byn.may.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.jun.forecast_total" value="{{ con_sum.sum_byn.jun.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.2quart.forecast_total" value="{{ con_sum.sum_byn.2quart.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.6months.forecast_total" value="{{ con_sum.sum_byn.6months.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.jul.forecast_total" value="{{ con_sum.sum_byn.jul.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.aug.forecast_total" value="{{ con_sum.sum_byn.aug.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.sep.forecast_total" value="{{ con_sum.sum_byn.sep.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.3quart.forecast_total" value="{{ con_sum.sum_byn.3quart.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.9months.forecast_total" value="{{ con_sum.sum_byn.9months.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.oct.forecast_total" value="{{ con_sum.sum_byn.oct.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.nov.forecast_total" value="{{ con_sum.sum_byn.nov.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.dec.forecast_total" value="{{ con_sum.sum_byn.dec.forecast_total }}"></td>
+            <td><input readonly name="sum_byn.4quart.forecast_total" value="{{ con_sum.sum_byn.4quart.forecast_total }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td>{{ con_sum.sum_byn.jan.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.feb.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.mar.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.1quart.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.apr.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.may.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.jun.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.2quart.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.6months.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.jul.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.aug.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.sep.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.3quart.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.9months.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.oct.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.nov.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.dec.forecast_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.4quart.forecast_total.amount }}</td>
+            <td><input readonly name="sum_byn.1quart.economy_total" value="{{ con_sum.sum_byn.1quart.economy_total }}"></td>
+            <td><input readonly name="sum_byn.2quart.economy_total" value="{{ con_sum.sum_byn.2quart.economy_total }}"></td>
+            <td><input readonly name="sum_byn.3quart.economy_total" value="{{ con_sum.sum_byn.3quart.economy_total }}"></td>
+            <td><input readonly name="sum_byn.4quart.economy_total" value="{{ con_sum.sum_byn.4quart.economy_total }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td>{{ con_sum.sum_byn.1quart.economy_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.2quart.economy_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.3quart.economy_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.4quart.economy_total.amount }}</td>
+            <td><input readonly name="sum_byn.1quart.fact_total" value="{{ con_sum.sum_byn.1quart.fact_total }}"></td>
+            <td><input readonly name="sum_byn.jan.fact_total" value="{{ con_sum.sum_byn.jan.fact_total }}"></td>
+            <td><input readonly name="sum_byn.feb.fact_total" value="{{ con_sum.sum_byn.feb.fact_total }}"></td>
+            <td><input readonly name="sum_byn.mar.fact_total" value="{{ con_sum.sum_byn.mar.fact_total }}"></td>
+            <td><input readonly name="sum_byn.2quart.fact_total" value="{{ con_sum.sum_byn.2quart.fact_total }}"></td>
+            <td><input readonly name="sum_byn.apr.fact_total" value="{{ con_sum.sum_byn.apr.fact_total }}"></td>
+            <td><input readonly name="sum_byn.may.fact_total" value="{{ con_sum.sum_byn.may.fact_total }}"></td>
+            <td><input readonly name="sum_byn.jun.fact_total" value="{{ con_sum.sum_byn.jun.fact_total }}"></td>
+            <td><input readonly name="sum_byn.6months.plan_sum_SAP" value="{{ con_sum.sum_byn.6months.plan_sum_SAP }}"></td>
+            <td><input readonly name="sum_byn.6months.fact_total" value="{{ con_sum.sum_byn.6months.fact_total  }}"></td>
+            <td><input readonly name="sum_byn.3quart.fact_total" value="{{ con_sum.sum_byn.3quart.fact_total }}"></td>
+            <td><input readonly name="sum_byn.jul.fact_total" value="{{ con_sum.sum_byn.jul.fact_total }}"></td>
+            <td><input readonly name="sum_byn.aug.fact_total" value="{{ con_sum.sum_byn.aug.fact_total }}"></td>
+            <td><input readonly name="sum_byn.sep.fact_total" value="{{ con_sum.sum_byn.sep.fact_total }}"></td>
+            <td><input readonly name="sum_byn.9months.plan_sum_SAP" value="{{ con_sum.sum_byn.9months.plan_sum_SAP }}"></td>
+            <td><input readonly name="sum_byn.9months.fact_total" value="{{ con_sum.sum_byn.9months.fact_total }}"></td>
+            <td><input readonly name="sum_byn.4quart.fact_total" value="{{ con_sum.sum_byn.4quart.fact_total }}"></td>
+            <td><input readonly name="sum_byn.oct.fact_total" value="{{ con_sum.sum_byn.oct.fact_total }}"></td>
+            <td><input readonly name="sum_byn.10months.fact_total" value="{{ con_sum.sum_byn.10months.fact_total }}"></td>
+            <td><input readonly name="sum_byn.nov.fact_total" value="{{ con_sum.sum_byn.nov.fact_total }}"></td>
+            <td><input readonly name="sum_byn.dec.fact_total" value="{{ con_sum.sum_byn.dec.fact_total }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td>{{ con_sum.sum_byn.1quart.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.jan.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.feb.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.mar.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.2quart.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.apr.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.may.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.jun.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.6months.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.sum_byn.6months.fact_total.amount  }}</td>
-            <td>{{ con_sum.sum_byn.3quart.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.jul.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.aug.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.sep.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.9months.plan_sum_SAP.amount }}</td>
-            <td>{{ con_sum.sum_byn.9months.fact_total.amount }}q</td>
-            <td>{{ con_sum.sum_byn.4quart.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.oct.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.10months.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.nov.fact_total.amount }}</td>
-            <td>{{ con_sum.sum_byn.dec.fact_total.amount }}</td>
-            <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td>{{ con_sum.sum_byn.1quart.economy_contract_result }}</td>
-            <td>{{ con_sum.sum_byn.2quart.economy_contract_result }}</td>
-            <td>{{ con_sum.sum_byn.3quart.economy_contract_result }}</td>
-            <td>{{ con_sum.sum_byn.4quart.economy_contract_result }}</td>
+            <td><input readonly name="sum_byn.1quart.economy_contract_up_data" value="{{ con_sum.sum_byn.1quart.economy_contract_up_data }}"></td>
+            <td><input readonly name="sum_byn.2quart.economy_contract_up_data" value="{{ con_sum.sum_byn.2quart.economy_contract_up_data }}"></td>
+            <td><input readonly name="sum_byn.3quart.economy_contract_up_data" value="{{ con_sum.sum_byn.3quart.economy_contract_up_data }}"></td>
+            <td><input readonly name="sum_byn.4quart.economy_contract_up_data" value="{{ con_sum.sum_byn.4quart.economy_contract_up_data }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
             <td class="calc" bgcolor="red">{{ con_sum. }}</td>
         </tr>
     {% endfor %}
 </table>
-<a href="{% url 'planes:create_contract' %}">Создать договор</a>
-<br>
-<button class="delete_contract">Удалить контракты</button>
-<button class="copy_contract">Копировать контракт</button>
-<a href="{% url 'planes:deleted_contracts' %}">Уаленные контракты</a><br>
-<a href="{% url 'planes:excel_parser' %}">Импортировать excel</a>
+<div class="table_actions">
+    <button type="button" id="change_mode_ok">Редактировать договор</button>
 
+    <a href="{% url 'planes:create_contract' %}">Создать договор</a>
+    <br>
+    <button class="delete_contract">Удалить контракты</button>
+    <button class="copy_contract">Копировать контракт</button>
+    <a href="{% url 'planes:deleted_contracts' %}">Уаленные контракты</a><br>
+    <a href="{% url 'planes:excel_parser' %}">Импортировать excel</a>
+</div>
 <br><br>
 <div class="contract_search_div">
 
@@ -295,8 +411,13 @@
         <button type="submit">Найти</button>
         <a href="{% url 'planes:contracts' %}">Вернуть исходные</a>
     </form>
-
 </div>
+
+<div hidden class="change_mode_actions">
+    <button type="button" id="change_mode_save">Сохранить</button>
+    <button type="button" id="change_mode_back">Назад</button>
+</div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -312,7 +433,6 @@
                     checked.push($(this).val());
 
                 });
-                console.log(checked);
                 $.ajax({
                     'url':'/plane/contracts/copy_contract/',
                     'data': {'contract_id':'con_id',
@@ -325,6 +445,78 @@
                 });
             });
         {% endif %}
+
+        $('#change_mode_ok').on('click', function (change_in_table) {
+            let checked = []
+            $('input:checkbox:checked').each(function() {
+                checked.push($(this).val());
+            });
+            if (checked.length != 1) {
+                alert('Выбрано более одного контракта для редактирования');
+            }
+            else {
+                changes_in = []
+                let test = $('#table_'+checked);
+                cells = test.find('input');
+                cells.each(function () {
+                    $(this).attr('readonly', false);
+                });
+                $('input').on('change', function() {
+                    changes_in.push(this.name)
+                });
+                $('select').on('change', function() {
+                    changes_in.push(this.name)
+                    console.log(this)
+                });
+
+
+                $('.table_actions').toggle();
+                $('.contract_search_div').toggle();
+                $('.change_mode_actions').toggle();
+                $('.choiser_FK').toggle()
+            };
+        });
+
+        $('#change_mode_save').on('click', function (save_changes) {
+            let checked = []
+            $('input:checkbox:checked').each(function() {
+                checked.push($(this).val());
+            });
+            console.log('save it')
+            let up_data = {}
+            let all_values = {}
+            table_id = 'table_'+checked
+            let container = $('#table_'+checked);
+            container.find('input').each(function () {
+                all_values[this.name] = this.value
+            });
+
+            container.find('select').each(function () {
+                all_values[this.name] = this.value
+            });
+            $.each(changes_in, function() {
+                up_data[this] = all_values[this]
+            });
+
+<!-- send to backend and make changes in model-->
+
+            $.ajax({
+                'url': '/plane/contracts/change_table/',
+                'data': {'contract_id':checked,
+                        'from_ajax':'change_table',
+                         up_data},
+                success: function (suc) {
+                    console.log('success');
+                }
+            });
+        });
+
+        $('#change_mode_back').unbind('click').bind('click', function (back) {
+            $('.table_actions').toggle()
+            $('.contract_search_div').toggle()
+            $('.change_mode_actions').toggle()
+             $('.choiser_FK').toggle()
+        });
 
         $('.copy_contract').on('click', function (copy_con) {
             let checked = []
@@ -340,10 +532,7 @@
                     window.location.href = url_to_go ;
             };
         });
-
     });
 </script>
-
-    </div>
 
 {% endblock content %}

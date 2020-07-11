@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="headline">
+    <h1>Отчет RDKZ</h1>
+</div>
+
+<form action="{% url 'analytics:RKDZ_template'  %}" method="get">
+
+<div id="data-container">
+
+<table id="RDKZ" class="table table-responsive sort_col_table dragging sorted_table" style="font-size:1vw; " border="1" >
+
+<thead class="sorted_head">
+<tr>
+            <th style="word-wrap:break-word;font-size: 1vw;">Наименование графы</th>
+            <th style="word-wrap:break-word;font-size: 1vw; " class="placeholder dragged">Соответствие графе Реестра договоров</th>
+            <th style="word-wrap:break-word;font-size: 1vw;">Добавить</th>
+
+</tr>
+</thead>
+    <tbody>
+{% for head in ADD%}
+    <tr>
+        <td style="font-size: 1vw;">{{head.0}}</td>
+        <td style="font-size: 1vw;">{{head.1}}</td>
+        <td style="font-size: 1vw;"><input type="checkbox" name={{head.2}}></td>
+    </tr>
+{%endfor%}
+    </tbody>
+
+</table>
+</div>
+
+    <div class="buttons-container">
+    <input type="submit" class="form_submit button" value="Добавить">
+    <button class="button" onclick="history.back()">Назад</button>
+</div>
+
+</form>
+<script src="{%static 'analytics/js/jquery.min.js'%}" ></script>
+<script src="{%static 'analytics/js/jquery-sortable.js'%}" ></script>
+
+<link rel="stylesheet" href="{%static 'analytics/css/analytics.css'%}">
+<script src="{%static 'analytics/js/scriptAnalytics.js'%}" ></script>
+
+
+{% endblock content %}

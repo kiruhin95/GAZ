@@ -439,29 +439,26 @@ class SumsRUR(models.Model):  # TODO is that only in RUR or in eny foregin curre
         choices=YEARS,
         max_length=4
     )
-    start_max_price_ASEZ_NDS = MoneyField(
+    start_max_price_ASEZ_NDS = models.DecimalField(
         verbose_name="стартовая цена АСЭЗ с НДС ",
         null=True,
         blank=True,
         decimal_places=2,
         max_digits=12,
-        #default_currency=('RUR', 'RUB')
     )
-    currency_rate_on_load_date_ASEZ_NDS = MoneyField(
+    currency_rate_on_load_date_ASEZ_NDS = models.DecimalField(
         verbose_name="Курс валюты на дату загрузки в бел.руб.",
         null=True,
         blank=True,
         decimal_places=5,
         max_digits=12,
-        #default_currency=('RUR', 'RUB')
     )
-    contract_sum_NDS_RUB = MoneyField(
+    contract_sum_NDS_RUB = models.DecimalField(
         verbose_name="Сумма договора с НДС рос.руб.",
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-       # default_currency=('RUR', 'RUB')
     )
     currency = models.ForeignKey(  # TODO what to do with this
         Currency,
@@ -470,13 +467,12 @@ class SumsRUR(models.Model):  # TODO is that only in RUR or in eny foregin curre
         blank=True,
         null=True
     )
-    delta_data_ASEZ = MoneyField(
+    delta_data_ASEZ = models.DecimalField(
         verbose_name="Отклонение от НМЦ в АСЭЗ",
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        #default_currency=('RUR', 'RUB')
     )
 
     def __str__(self):
@@ -552,102 +548,92 @@ class SumsBYN(models.Model):
         verbose_name="Период",
         max_length=15
     )
-    plan_sum_SAP = MoneyField(
+    plan_sum_SAP = models.DecimalField(
         verbose_name="Плановая сумма САП",
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='1-4 квартал - вручную; год, 6 месяцев, 9 месяцев - расчетные'
     )
-    contract_sum_without_NDS_BYN = MoneyField(
+    contract_sum_without_NDS_BYN = models.DecimalField(
         verbose_name="Сумма всего договора без НДС",
         default=0,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         help_text='1-4 квартал - вручную, год- расчетное'
     )
-    contract_sum_with_NDS_BYN = MoneyField(
+    contract_sum_with_NDS_BYN = models.DecimalField(
         verbose_name="Сумма договора с НДС бел.руб.",
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Год - вручную'
     )
-    contract_total_sum_with_sub_BYN = MoneyField(
+    contract_total_sum_with_sub_BYN = models.DecimalField(
         verbose_name='Общая сумма договора всего с доп соглашениями, б.р. без ндс',
         null=True,
         blank=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Год - расчетное'
     )
-    forecast_total = MoneyField(
+    forecast_total = models.DecimalField(
         verbose_name='Прогноз',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Январь-декабрь - вручную, 1-4 квартал, год, 9 месяцев - расчетные'
     )
-    economy_total = MoneyField(
+    economy_total = models.DecimalField(
         verbose_name='Экономия по заключенному договору, всего',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='1-4 квартал, год - расчетные'
     )
-    fact_total = MoneyField(
+    fact_total = models.DecimalField(
         verbose_name='Факт, всего',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Январь-декабрь - вручную, 1-4 квартал, год, 6 месяцев, 9 месяцев,10 месяцев - расчетные'
     )
-    economy_contract_result = MoneyField(
+    economy_contract_result = models.DecimalField(
         verbose_name='Экономия по результатам исполнения договоров всего',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Год - расчетное'
 
     )
-    total_sum_unsigned_contracts = MoneyField(
+    total_sum_unsigned_contracts = models.DecimalField(
         verbose_name='Сумма средств по незаключенным договорам',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Год - расчетное'
     )
-    economy_total_absolute = MoneyField(
+    economy_total_absolute = models.DecimalField(
         verbose_name='Абсолютная экономия по договору, всего',
         blank=True,
         null=True,
         decimal_places=2,
         max_digits=12,
-        default_currency='BYN',
         default=0,
         help_text='Год - расчетное'
     )

@@ -7,23 +7,25 @@ from planes.models import (
     ContractType,
     ContractStatus
 )
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.views import View
-from django.db.models import Avg, Count, Min, Sum, Q
+from django.shortcuts import render
+from django.db.models import Sum, Q
 from decimal import Decimal
+import datetime
 
 def get_analytics_for_all_contracts(request):
     YEARS = [
         2018, 2019, 2020
     ]
+    y=datetime.datetime.now().year
+    if y not in YEARS:
+        YEARS.append(y)
     curators = Curator.objects.all()
     finance_costs = FinanceCosts.objects.all()
     contracts = Contract.objects.all()
     contract_types = ContractType.objects.all()
     contract_status = ContractStatus.objects.all()
 
-    year = '2020'
+    year = y
     curator_id = 1
     finance_cost_id = 1
     contract_type_id = '1'
@@ -212,6 +214,9 @@ def get_deviation_analysis(request):
     YEARS = [
         2018, 2019, 2020
     ]
+    y=datetime.datetime.now().year
+    if y not in YEARS:
+        YEARS.append(y)
 
     REPORTS = {
         '1': '1. Лимит средств (из раздела БПиЭА) - Плановая сумма SAP',
@@ -235,14 +240,10 @@ def get_deviation_analysis(request):
     curators = Curator.objects.all()
     finance_costs = FinanceCosts.objects.all()
     contracts = Contract.objects.all()
-    # contract_types = ContractType.objects.all()
-    # contract_status = ContractStatus.objects.all()
 
-    year = '2020'
+    year = y
     curator_id = 1
     finance_cost_id = 1
-    # contract_type_id = '1'
-    # contract_status_id = '0'
     report= '1'
 
     if request.GET:
@@ -253,26 +254,6 @@ def get_deviation_analysis(request):
 
     finance_cost_title = FinanceCosts.objects.filter(id=finance_cost_id).values('title')[0]['title']
     curator_title = Curator.objects.filter(id=curator_id).values('title')[0]['title']
-
-    # if contract_type_id == '0':
-    #     contract_types_ids = [value['id'] for value in contract_types.values('id')]
-    # else:
-    #     contract_types_ids = list(contract_type_id)
-
-    # status_id = int(contract_status_id)
-    #
-    # contract_status_ids=['0']
-    #
-    # if contract_status_id == '0':
-    #     contract_status_ids = [value['id'] for value in contract_status.values('id')]
-    # elif contract_status.values('id', 'title').filter(id=status_id)[0]['title']=='Заключен':
-    #     ad =[i['id']  for i in contract_status.values('id', 'title') if i['title'] == 'Исполнен']
-    #     contract_status_ids = list(contract_status_id) + ad
-    # elif contract_status.values('id', 'title').filter(id=status_id)[0]['title']=='Исполнен':
-    #     ad =[i['id']  for i in contract_status.values('id', 'title') if i['title'] == 'Заключен']
-    #     contract_status_ids = list(contract_status_id) + ad
-    # else:
-    #     contract_status_ids = list(contract_status_id)
 
     planning = Planning.objects.filter(
         FinanceCosts_id = finance_cost_id,
@@ -301,8 +282,6 @@ def get_deviation_analysis(request):
         year=year,
         contract__finance_cost_id = finance_cost_id,
         contract__curator_id = curator_id,
-        # contract__contract_type_id__in=contract_types_ids,
-        # contract__contract_status_id__in=contract_status_ids,
         contract__contract_active='True'
     ).aggregate(sum = Sum('plan_sum_SAP'))['sum']
         if not plan_sum_sap_all:
@@ -316,7 +295,6 @@ def get_deviation_analysis(request):
             year=year,
             contract__finance_cost_id=finance_cost_id,
             contract__curator_id=curator_id,
-            # contract__contract_type_id__in=contract_types_ids,
             contract__contract_status__title__in=['Заключен', 'Исполнен'],
             contract__contract_active='True'
         ).aggregate(sum=Sum('contract_sum_without_NDS_BYN'))['sum']

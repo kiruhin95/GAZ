@@ -1,0 +1,80 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+
+{% block styles %}
+{% endblock styles %}
+
+
+{% block content %}
+{#    <div class="headline">#}
+{#        <h1>Администрирование</h1>#}
+{#    </div>#}
+
+    <div id="data-container">
+
+        <div class="container">
+                <div class="search-input">
+                    <input type="text" placeholder="Введите login сотрудника" class="search-textfield">
+                </div>
+
+                <div class="search-button">
+                    <button class="search-button">
+                        <img src="{% static 'img/search-icon.svg' %}" class="search-icon">
+                    </button>
+                </div>
+        </div>
+
+        <div class="action-list-headliner">
+            <a href="" class="action-list-txt">Журнал действий</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>№</td>
+                    <td>Email</td>
+                    <td>ФИО</td>
+                    <td>Login</td>
+                    <td>Тип пользователя</td>
+                    <td>Подразделение</td>
+                    <td>Должность</td>
+                    <td>Дата создания</td>
+                    <td>Дата редактирования</td>
+                    <td>Журнал действий</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for person in users_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.name }}</td>
+                    <td>{{ person.user.username }}</td>
+                    <td>{{ person.user_type }}</td>
+                    <td>{{ person.curator }}</td>
+                    <td>{{ person.position }}</td>
+                    <td>{{ person.user.date_joined|date:'Y-m-d H:i' }}</td>
+                    <td>?</td>
+                    <td>Ж{{ forloop.counter }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="buttons-container">
+        <button class="button" onclick="window.location.href='/administration/reg/';">Создать</button>
+        <button class="button" onclick="">Редактировать</button>
+        <button class="button" onclick="">Заблокировать/Разблокировать</button>
+        <button class="button" onclick="">Обновить пароль</button>
+        <button class="button" onclick="">Удалить</button>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+{% endblock scripts %}
