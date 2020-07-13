@@ -50,7 +50,7 @@ import numpy as np
 
 
 user_rights = {}
-user_rights['lawyers'] = [
+user_rights['lawyers'] = (
     'id',  # id need course you can create new or etc
     'contract_mode',
     'number_ppz',
@@ -62,13 +62,13 @@ user_rights['lawyers'] = [
     'end_time',
     'counterpart',
     'related_contract'
-]
-user_rights['economists'] = [
+)
+user_rights['economists'] = (
     'id',
     'finance_cost',
     'activity_form',
-]
-user_rights['spec_ASEZ'] = [
+)
+user_rights['spec_ASEZ'] = (
     'id',
     'purchase_type',
     'number_ppz',
@@ -78,7 +78,7 @@ user_rights['spec_ASEZ'] = [
     'fact_load_date_ASEZ',
     'currency',
     'number_KGG',
-]
+)
 
 
 @login_required
@@ -172,7 +172,6 @@ class ContractView(View):
     def get(self, request):
         context = self.cont.copy()
         if request.GET.__contains__('search_name'):
-            print(request.GET)
             contracts = self.search(request)
 
         else:  # if no search request:
@@ -184,6 +183,26 @@ class ContractView(View):
 
         context['contracts'] = contracts
         context['contract_and_sum'] = contract_and_sum
+
+        ''' rights '''
+        block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+
+        user_groups = request.user.groups.all()
+        this_user_in_groups = [i.name for i in user_groups]
+        this_user_can_do = []
+        for i in this_user_in_groups:
+            this_user_can_do.extend(user_rights[i])
+
+        this_user_can_do = set(this_user_can_do)
+
+        this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
+        if 'id' in this_user_cant_do:
+            this_user_cant_do.remove('id')
+
+        print(this_user_can_do)
+
+
+
         return render(request,
                       template_name=self.template_name,
                       context=context)
