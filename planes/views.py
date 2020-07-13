@@ -42,7 +42,7 @@ from .models import (
 from django.urls import reverse
 import json
 from django.forms import formset_factory, modelformset_factory
-from django.db.models import Q
+from django.db.models import Q, Sum
 import math
 from decimal import *
 import pandas as pd
@@ -155,6 +155,12 @@ class ContractView(View):
     ''' render contracts register table and allow to search '''
     template_name = 'contracts/contract_main.html'
     today_year = date.today().year
+    quarts = [
+        "1quart",
+        "2quart",
+        "3quart",
+        "4quart",
+    ]
     cont = {}
     cont['all_fin_costs'] = FinanceCosts.objects.all()
     cont['all_curators'] = Curator.objects.all()
@@ -268,13 +274,28 @@ class ContractView(View):
 
                 period_byn[sum.period] = sum_dic
 
+            related_contracts = Contract.objects.filter(related_contract__id=contract.id)
+
+            sums_byn_quarts = sums_byn.filter(period__in=self.quarts)
+            total_forecast_sap = sums_byn_quarts.aggregate(Sum('forecast_total'))
+            total_contract_sum_without_NDS_BYN = sums_byn_quarts.aggregate(Sum('plan_sum_SAP'))
+            total_contract_sum_NDS_BYN = total_contract_sum_without_NDS_BYN['plan_sum_SAP__sum'] * Decimal(1.2)
+            total_with_relations = sums_byn.get(period='year').contract_total_sum_with_sub_BYN
+
             contract_and_sum.append(
                 {
                     'contract': contract,
                     'sum_byn': period_byn,
                     'sum_rur': sum_rur,
+                    'total_forecast_sap':total_forecast_sap,
+                    'total_contract_sum_without_NDS_BYN':total_contract_sum_without_NDS_BYN,
+                    'total_contract_sum_NDS_BYN':total_contract_sum_NDS_BYN,
+                    'total_with_relations':total_with_relations,
                 }
             )
+
+
+
         return contract_and_sum
 
     def change_in_table(self, contract_id):
