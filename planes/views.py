@@ -200,6 +200,7 @@ class ContractView(View):
             this_user_cant_do.remove('id')
 
         print(this_user_can_do)
+        context['this_user_can_do'] = this_user_can_do
 
 
 
