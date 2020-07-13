@@ -42,7 +42,7 @@
         <th>Сумма заключенного договора III кв., без НДС, BYN</th>
         <th>Сумма заключенного договора IV кв., без НДС, BYN</th>
         <th>Сумма заключенного договора, всего с НДС, BYN</th>
-        <th>Общая цена договора с учетом всех дополнительных соглашений<br>(Допсоглашение в реестре должно отображаться как отдельная запись!,<br> поэтому данное поле должно быть только как справочное!)</th>
+        <th>Общая цена договора с учетом всех дополнительных соглашений</th>
         <th>Прогноз, всего</th>
         <th>Прогноз Янв</th>
         <th>Прогноз Фев</th>
@@ -244,7 +244,7 @@
             </td>
             <td><input readonly name="sum_rur.delta_data_ASEZ" value="{{ con_sum.sum_rur.delta_data_ASEZ }}"></td>
             <td><input readonly name="contract.number_KGG" value="{{ con_sum.contract.number_KGG }}"></td>
-            <td class="calc" bgcolor="red"><input readonly value="{{ con_sum. }}"></td>
+            <td class="calc" bgcolor="red"><input readonly value="{{ con_sum.total_forecast_sap.forecast_total__sum }}"></td>
             <td><input readonly name="sum_byn.1quart.plan_sum_SAP" value="{{ con_sum.sum_byn.1quart.plan_sum_SAP }}"></td>
             <td><input readonly name="sum_byn.2quart.plan_sum_SAP" value="{{ con_sum.sum_byn.2quart.plan_sum_SAP }}"></td>
             <td><input readonly name="sum_byn.3quart.plan_sum_SAP" value="{{ con_sum.sum_byn.3quart.plan_sum_SAP }}"></td>
@@ -268,14 +268,14 @@
                     {% endif %}
                 </select>
             </td>
-            <td class="calc" bgcolor="red">{{ con_sum.sum_byn.contract_sum_without_NDS_BYN }}</td>
+            <td class="calc" bgcolor="red">{{ con_sum.total_contract_sum_without_NDS_BYN.plan_sum_SAP__sum }}</td>
             <td><input readonly name="sum_byn.1quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.1quart.contract_sum_without_NDS_BYN }}"></td>
             <td><input readonly name="sum_byn.2quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN }}"></td>
             <td><input readonly name="sum_byn.3quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN }}"></td>
             <td><input readonly name="sum_byn.4quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN }}"></td>
-            <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td class="calc" bgcolor="red">{{ con_sum. }}</td>
-            <td class="calc" bgcolor="red">{{ con_sum. }}</td>
+            <td class="calc" bgcolor="red">{{ con_sum.total_contract_sum_NDS_BYN }}</td>
+            <td class="calc" bgcolor="red">{{ con_sum.total_with_relations }}</td>
+            <td class="calc" bgcolor="red">{{ con_sum.total_forecast_sap.forecast_total__sum }}</td>
             <td><input readonly name="sum_byn.jan.forecast_total" value="{{ con_sum.sum_byn.jan.forecast_total }}"></td>
             <td><input readonly name="sum_byn.feb.forecast_total" value="{{ con_sum.sum_byn.feb.forecast_total }}"></td>
             <td><input readonly name="sum_byn.mar.forecast_total" value="{{ con_sum.sum_byn.mar.forecast_total }}"></td>
