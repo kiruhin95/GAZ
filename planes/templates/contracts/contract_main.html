@@ -417,11 +417,17 @@
     <button type="button" id="change_mode_save">Сохранить</button>
     <button type="button" id="change_mode_back">Назад</button>
 </div>
+<hr>
+<input id="can_do" value="{{ this_user_can_do }}">
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $('document').ready(function () {
+        let can_do = $('#can_do').val()
+
+
         $('.contract_choice').on('click', function (chose) {
             console.log(this.value);
         });
@@ -459,6 +465,7 @@
                 let test = $('#table_'+checked);
                 cells = test.find('input');
                 cells.each(function () {
+
                     $(this).attr('readonly', false);
                 });
                 $('input').on('change', function() {
