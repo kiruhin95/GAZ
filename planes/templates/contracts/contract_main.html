@@ -425,8 +425,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $('document').ready(function () {
-        let can_do = $('#can_do').val()
-
+        let can_do = $('#can_do').val();
+        console.log(can_do)
 
         $('.contract_choice').on('click', function (chose) {
             console.log(this.value);
@@ -469,11 +469,16 @@
                     $(this).attr('readonly', false);
                 });
                 $('input').on('change', function() {
-                    changes_in.push(this.name)
+                    let arr = this.name.split('.');
+                    let last = arr[arr.lenght - 1];
+                    if ($.inArray(last, can_do)) {
+                        console.log('in')
+                    };
+                    changes_in.push(this.name);
                 });
                 $('select').on('change', function() {
-                    changes_in.push(this.name)
-                    console.log(this)
+                    changes_in.push(this.name);
+                    console.log(this);
                 });
 
 
@@ -522,7 +527,7 @@
             $('.table_actions').toggle()
             $('.contract_search_div').toggle()
             $('.change_mode_actions').toggle()
-             $('.choiser_FK').toggle()
+            $('.choiser_FK').toggle()
         });
 
         $('.copy_contract').on('click', function (copy_con) {
