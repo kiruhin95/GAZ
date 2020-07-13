@@ -418,7 +418,7 @@
     <button type="button" id="change_mode_back">Назад</button>
 </div>
 <hr>
-<input id="can_do" value="{{ this_user_can_do }}">
+<input id="can_do" value="{{ this_user_can_do }}">{{ this_user_can_do }}
 
 
 
@@ -426,7 +426,10 @@
 <script>
     $('document').ready(function () {
         let can_do = $('#can_do').val();
+        can_do = can_do.replace('{', '').replace('}', '').replace(/'/g, '').replace(/ /g, '').split(',');
         console.log(can_do)
+
+
 
         $('.contract_choice').on('click', function (chose) {
             console.log(this.value);
@@ -465,15 +468,20 @@
                 let test = $('#table_'+checked);
                 cells = test.find('input');
                 cells.each(function () {
+                    let arr = this.name.split('.');
+                    let last = arr[arr.length -1];
+                    if ($.inArray(last, can_do) !== -1) {
+                        console.log(last)
+                    };
 
                     $(this).attr('readonly', false);
                 });
                 $('input').on('change', function() {
-                    let arr = this.name.split('.');
-                    let last = arr[arr.lenght - 1];
-                    if ($.inArray(last, can_do)) {
-                        console.log('in')
-                    };
+<!--                    let arr = this.name.split('.');-->
+<!--                    let last = arr[arr.lenght - 1];-->
+<!--                    if ($.inArray(last, can_do)) {-->
+<!--                        console.log('in')-->
+<!--                    };-->
                     changes_in.push(this.name);
                 });
                 $('select').on('change', function() {
