@@ -776,75 +776,85 @@ class parse_excel(View):
         test = excel_data.drop(columns=[i for i in to_drop])
         dic = test.to_dict(orient='records')
         for line in dic:
-            new_contract = Contract.objects.create(
-                title=line['Наименование (предмет) договора, доп соглашения к договору'],
-                finance_cost=self.fk_model(line,
-                                      model=FinanceCosts,
-                                      value='Статья финансирования'),
-                curator=self.fk_model(line,
-                                 model=Curator,
-                                 value='Куратор'),
-                stateASEZ=self.fk_model(line,
-                                   model=StateASEZ,
-                                   value='Состояние АСЭЗ'),
-                plan_load_date_ASEZ=date.today().isoformat(),  # TODO what is it?
-                plan_sign_date=date.today().isoformat(),  # TODO what is it?
-                start_date=line['Дата заключения'].to_pydatetime(),
-                activity_form=self.fk_model(line,
-                                       model=ActivityForm,
-                                       value='Виды деятельности'),
-                contract_mode_id=1,  # Основной
-                contract_type=self.fk_model(line,
-                                       model=ContractType,
-                                       value='Центр/филиал'.split('.')[0]),
-                counterpart=self.fk_model(line,
-                                     model=Counterpart,
-                                     value='Контрагент по договору'),
-                purchase_type=self.fk_model(line,
-                                       model=PurchaseType,
-                                       value='Тип закупки\n(конкурентная/\nнеконкурентная ЕП)'),
-                number_ppz=line['№ ППЗ АСЭЗ'],
-                number_KGG=line['Номер договора']
-            )
-
-            new_sum_rur = SumsRUR.objects.create(
-                contract=new_contract,
-                year='2020',  # TODO parse it from excel
-                start_max_price_ASEZ_NDS=None,  # TODO where is info?
-            )
-            for p in self.periods:
-                month = self.periods[p]
-                forecast_month = line['Прогноз {0}'.format(month)]
+            print(line)
+            try:
                 try:
-                    fact = line['Факт {0}'.format(month)]
+                    date_start = line['Дата заключения'].to_pydatetime()
                 except:
-                    fact = line['Факт {0}.'.format(month)]
-                if math.isnan(forecast_month):
-                    forecast_month = 0
-                if math.isnan(fact):
-                    fact = 0
+                    date_start = '1900-01-01'
 
-                new_sum_byn = SumsBYN.objects.create(
-                    period=p,
-                    contract=new_contract,
-                    year=new_sum_rur.year,
-                    forecast_total=Decimal(forecast_month),
-                    fact_total=Decimal(fact),
+                new_contract = Contract.objects.create(
+                    title=line['Наименование (предмет) договора, доп соглашения к договору'],
+                    finance_cost=self.fk_model(line,
+                                          model=FinanceCosts,
+                                          value='Статья финансирования'),
+                    curator=self.fk_model(line,
+                                     model=Curator,
+                                     value='Куратор'),
+                    stateASEZ=self.fk_model(line,
+                                       model=StateASEZ,
+                                       value='Состояние АСЭЗ'),
+                    plan_load_date_ASEZ=date.today().isoformat(),  # TODO what is it?
+                    plan_sign_date=date.today().isoformat(),  # TODO what is it?
+
+                    start_date=date_start,
+                    activity_form=self.fk_model(line,
+                                           model=ActivityForm,
+                                           value='Виды деятельности'),
+                    contract_mode_id=1,  # Основной
+                    contract_type=self.fk_model(line,
+                                           model=ContractType,
+                                           value='Центр/филиал'.split('.')[0]),
+                    counterpart=self.fk_model(line,
+                                         model=Counterpart,
+                                         value='Контрагент по договору'),
+                    purchase_type=self.fk_model(line,
+                                           model=PurchaseType,
+                                           value='Тип закупки\n(конкурентная/\nнеконкурентная ЕП)'),
+                    number_ppz=line['№ ППЗ АСЭЗ'],
+                    number_KGG=line['Номер договора']
                 )
-            for q in self.quarts:
-                quart = self.quarts[q]
-                forecast_quart = line['Плановая сумма SAP {0}'.format(quart)]
-                if math.isnan(forecast_quart):
-                    forecast_quart = 0
-                elif forecast_quart is str:
-                    forecast_quart = forecast_quart.replace(',', '.')
-                quart_sum_byn = SumsBYN.objects.get(
+
+                new_sum_rur = SumsRUR.objects.create(
                     contract=new_contract,
-                    period=q,
-                    year=new_sum_rur.year
+                    year='2020',  # TODO parse it from excel
+                    start_max_price_ASEZ_NDS=None,  # TODO where is info?
                 )
-                quart_sum_byn.plan_sum_SAP = Decimal(forecast_quart)
-                quart_sum_byn.save()
+                for p in self.periods:
+                    month = self.periods[p]
+                    forecast_month = line['Прогноз {0}'.format(month)]
+                    try:
+                        fact = line['Факт {0}'.format(month)]
+                    except:
+                        fact = line['Факт {0}.'.format(month)]
+                    if math.isnan(forecast_month):
+                        forecast_month = 0
+                    if math.isnan(fact):
+                        fact = 0
+
+                    new_sum_byn = SumsBYN.objects.create(
+                        period=p,
+                        contract=new_contract,
+                        year=new_sum_rur.year,
+                        forecast_total=Decimal(forecast_month),
+                        fact_total=Decimal(fact),
+                    )
+                for q in self.quarts:
+                    quart = self.quarts[q]
+                    forecast_quart = line['Плановая сумма SAP {0}'.format(quart)]
+                    if math.isnan(forecast_quart):
+                        forecast_quart = 0
+                    elif forecast_quart is str:
+                        forecast_quart = forecast_quart.replace(',', '.')
+                    quart_sum_byn = SumsBYN.objects.get(
+                        contract=new_contract,
+                        period=q,
+                        year=new_sum_rur.year
+                    )
+                    quart_sum_byn.plan_sum_SAP = Decimal(forecast_quart)
+                    quart_sum_byn.save()
+            except:
+                pass
 
         return redirect(reverse('planes:contracts'))
 
