@@ -368,7 +368,7 @@ class Contract(models.Model):
         blank=True
     )
     plan_sign_date = models.DateField(
-        verbose_name="Планируемая дата подписания договора"
+        verbose_name="Планируемая дата подписания договора",
     )
     fact_sign_date = models.DateField(
         verbose_name="Фактическая дата подписания договора",
@@ -376,11 +376,12 @@ class Contract(models.Model):
         blank=True
     )
     start_date = models.DateField(
-        verbose_name="дата начала контракта"
+        verbose_name="дата начала контракта",
     )
     end_time = models.DateField(
         verbose_name="дата окончания",
-        null=True, blank=True
+        null=True,
+        blank=True
     )
     counterpart = models.ForeignKey(
         Counterpart,
