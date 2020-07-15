@@ -441,11 +441,11 @@
 </div>
 <input hidden id="can_do" value="{{ this_user_can_do }}">
 
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $('document').ready(function () {
+
+
         let can_do = $('#can_do').val();
         can_do = can_do.replace('{', '').replace('}', '').replace(/'/g, '').replace(/ /g, '').split(',');
 
