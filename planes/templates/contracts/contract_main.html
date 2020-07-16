@@ -268,11 +268,11 @@
                     {% endif %}
                 </select>
             </td>
-            <td class="calc" bgcolor="red">{{ con_sum.total_contract_sum_without_NDS_BYN.plan_sum_SAP__sum }}</td>
-            <td><input readonly name="sum_byn.1quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.1quart.contract_sum_without_NDS_BYN }}"></td>
-            <td><input readonly name="sum_byn.2quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN }}"></td>
-            <td><input readonly name="sum_byn.3quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN }}"></td>
-            <td><input readonly name="sum_byn.4quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN }}"></td>
+            <td class="total_calc_without_NDS" bgcolor="red">{{ con_sum.total_contract_sum_without_NDS_BYN.plan_sum_SAP__sum }}</td>
+            <td><input class="calc_contract_sum" readonly name="sum_byn.1quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.1quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input class="calc_contract_sum" readonly name="sum_byn.2quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input class="calc_contract_sum" readonly name="sum_byn.3quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN }}"></td>
+            <td><input class="calc_contract_sum" readonly name="sum_byn.4quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN }}"></td>
             <td class="calc" bgcolor="red">{{ con_sum.total_contract_sum_NDS_BYN }}</td>
             <td class="calc" bgcolor="red">{{ con_sum.total_with_relations }}</td>
             <td class="calc" bgcolor="red">{{ con_sum.total_forecast_sap.forecast_total__sum }}</td>
@@ -446,38 +446,24 @@
 
     let rows = $("tr[id^='table_']")
     rows.each(function () {
-        new_value = 0;
-        cal = $(this).find('.calc_plan_sum_SAP');
-        cal.each(function() {
-            new_value += parseFloat(this.value);
+        new_value_sap = 0;
+        cal_sap = $(this).find('.calc_plan_sum_SAP');
+        cal_sap.each(function() {
+            new_value_sap += parseFloat(this.value);
         });
         total_plan_sap = $(this).find('.total_calc_plan_sap');
-        total_plan_sap.text(new_value)
-        console.log(total_plan_sap)
+        total_plan_sap.text(new_value_sap);
 
+        new_value_contract_sum_without_NSD = 0;
+        cal_contract_sum = $(this).find('.calc_contract_sum');
+        cal_contract_sum.each(function() {
+            new_value_contract_sum_without_NSD += parseFloat(this.value);
+        });
+        total_contract_sum_without_NSD = $(this).find('.total_calc_without_NDS');
+        total_contract_sum_without_NSD.text(new_value_contract_sum_without_NSD)
     });
-
-
-<!--    rows.find('.calc_plan_sap').each(function () {-->
-<!--        let new_value = 454;-->
-<!--        wtf = $(this).find('.calc_plan_sum_SAP')-->
-<!--&lt;!&ndash;        wtf.each(function () {&ndash;&gt;-->
-<!--&lt;!&ndash;            console.log('inside');&ndash;&gt;-->
-<!--&lt;!&ndash;        });&ndash;&gt;-->
-<!--        console.log(wtf);-->
-<!--        this.innerText = new_value;-->
-
-<!--    });-->
-
-    rows.find('.calc').each(function () {
-        this.innerText = 3434343;
-        console.log('second');
-    });
-
 
     $('document').ready(function () {
-
-
         let can_do = $('#can_do').val();
         can_do = can_do.replace('{', '').replace('}', '').replace(/'/g, '').replace(/ /g, '').split(',');
 
@@ -521,24 +507,19 @@
                     let arr = this.name.split('.');
                     let last = arr[arr.length -1];
                     if ($.inArray(last, can_do) !== -1) {
-                        console.log(last)
+<!--                        console.log(last)-->
                         $(this).attr('readonly', false);
-                        console.log(this)
+<!--                        console.log(this)-->
                     };
 
 
                 });
                 $('input').on('change', function() {
-<!--                    let arr = this.name.split('.');-->
-<!--                    let last = arr[arr.lenght - 1];-->
-<!--                    if ($.inArray(last, can_do)) {-->
-<!--                        console.log('in')-->
-<!--                    };-->
                     changes_in.push(this.name);
                 });
                 $('select').on('change', function() {
                     changes_in.push(this.name);
-                    console.log(this);
+<!--                    console.log(this);-->
                 });
 
 

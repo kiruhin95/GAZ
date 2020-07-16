@@ -68,7 +68,8 @@ user_rights['economists'] = (
     'finance_cost',
     'activity_form',
 
-    'plan_sum_SAP'
+    'plan_sum_SAP',
+    'contract_sum_without_NDS_BYN',
 )
 user_rights['spec_ASEZ'] = (
     'id',
@@ -178,6 +179,7 @@ class ContractView(View):
 
 
     def get(self, request):
+        print(request.GET)
         context = self.cont.copy()
         if request.GET.__contains__('search_name'):
             contracts = self.search(request)
@@ -186,6 +188,7 @@ class ContractView(View):
             contracts = Contract.objects.filter(
                 start_date__contains=self.today_year,
                 contract_active=True).order_by('-id')
+
 
         contract_and_sum = self.make_table(contracts)
 
