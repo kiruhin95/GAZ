@@ -67,6 +67,8 @@ user_rights['economists'] = (
     'id',
     'finance_cost',
     'activity_form',
+
+    'plan_sum_SAP'
 )
 user_rights['spec_ASEZ'] = (
     'id',
@@ -779,8 +781,6 @@ class parse_excel(View):
 
             try:
                 date_start = str(line['Дата заключения']).split(' ')[0]
-                print(date_start)
-                print(type(date_start))
                 if not date_start != 'NaT':
                     date_start = None
             except:

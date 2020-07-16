@@ -244,11 +244,11 @@
             </td>
             <td><input readonly name="sum_rur.delta_data_ASEZ" value="{{ con_sum.sum_rur.delta_data_ASEZ }}"></td>
             <td><input readonly name="contract.number_KGG" value="{{ con_sum.contract.number_KGG }}"></td>
-            <td class="calc" bgcolor="red"><input readonly value="{{ con_sum.total_forecast_sap.forecast_total__sum }}"></td>
-            <td><input readonly name="sum_byn.1quart.plan_sum_SAP" value="{{ con_sum.sum_byn.1quart.plan_sum_SAP }}"></td>
-            <td><input readonly name="sum_byn.2quart.plan_sum_SAP" value="{{ con_sum.sum_byn.2quart.plan_sum_SAP }}"></td>
-            <td><input readonly name="sum_byn.3quart.plan_sum_SAP" value="{{ con_sum.sum_byn.3quart.plan_sum_SAP }}"></td>
-            <td><input readonly name="sum_byn.4quart.plan_sum_SAP" value="{{ con_sum.sum_byn.4quart.plan_sum_SAP }}"></td>
+            <td class="total_calc_plan_sap" bgcolor="red">0</td>
+            <td><input readonly class="calc_plan_sum_SAP" name="sum_byn.1quart.plan_sum_SAP" value="{{ con_sum.sum_byn.1quart.plan_sum_SAP }}"></td>
+            <td><input readonly class="calc_plan_sum_SAP" name="sum_byn.2quart.plan_sum_SAP" value="{{ con_sum.sum_byn.2quart.plan_sum_SAP }}"></td>
+            <td><input readonly class="calc_plan_sum_SAP" name="sum_byn.3quart.plan_sum_SAP" value="{{ con_sum.sum_byn.3quart.plan_sum_SAP }}"></td>
+            <td><input readonly class="calc_plan_sum_SAP" name="sum_byn.4quart.plan_sum_SAP" value="{{ con_sum.sum_byn.4quart.plan_sum_SAP }}"></td>
             <td><input readonly name="contract.register_number_SAP" value="{{ con_sum.contract.register_number_SAP }}"></td>
             <td><input readonly name="contract.contract_number" value="{{ con_sum.contract.contract_number }}"></td>
             <td><input type="date" readonly name="contract.plan_sign_date" value="{{ con_sum.contract.plan_sign_date.isoformat }}"></td>
@@ -443,6 +443,38 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
+    let rows = $("tr[id^='table_']")
+    rows.each(function () {
+        new_value = 0;
+        cal = $(this).find('.calc_plan_sum_SAP');
+        cal.each(function() {
+            new_value += parseFloat(this.value);
+            console.log(this.value);
+        });
+        cal.find('.total_calc_plan_sap').innerText = new_value;
+        console.log(cal.find('.total_calc_plan_sap').innerText)
+        console.log(new_value)
+    });
+
+
+<!--    rows.find('.calc_plan_sap').each(function () {-->
+<!--        let new_value = 454;-->
+<!--        wtf = $(this).find('.calc_plan_sum_SAP')-->
+<!--&lt;!&ndash;        wtf.each(function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            console.log('inside');&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--        console.log(wtf);-->
+<!--        this.innerText = new_value;-->
+
+<!--    });-->
+
+    rows.find('.calc').each(function () {
+        this.innerText = 3434343;
+        console.log('second');
+    });
+
+
     $('document').ready(function () {
 
 
