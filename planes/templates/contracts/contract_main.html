@@ -450,11 +450,11 @@
         cal = $(this).find('.calc_plan_sum_SAP');
         cal.each(function() {
             new_value += parseFloat(this.value);
-            console.log(this.value);
         });
-        cal.find('.total_calc_plan_sap').innerText = new_value;
-        console.log(cal.find('.total_calc_plan_sap').innerText)
-        console.log(new_value)
+        total_plan_sap = $(this).find('.total_calc_plan_sap');
+        total_plan_sap.text(new_value)
+        console.log(total_plan_sap)
+
     });
 
 
