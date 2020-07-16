@@ -70,6 +70,9 @@ user_rights['economists'] = (
 
     'plan_sum_SAP',
     'contract_sum_without_NDS_BYN',
+    'forecast_total',
+    'economy_total',
+    'fact_total'
 
 )
 user_rights['spec_ASEZ'] = (
