@@ -273,28 +273,28 @@
             <td><input class="calc_contract_sum" readonly name="sum_byn.2quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.2quart.contract_sum_without_NDS_BYN }}"></td>
             <td><input class="calc_contract_sum" readonly name="sum_byn.3quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.3quart.contract_sum_without_NDS_BYN }}"></td>
             <td><input class="calc_contract_sum" readonly name="sum_byn.4quart.contract_sum_without_NDS_BYN" value="{{ con_sum.sum_byn.4quart.contract_sum_without_NDS_BYN }}"></td>
-            <td class="calc" bgcolor="red">{{ con_sum.total_contract_sum_NDS_BYN }}</td>
+            <td class="calc_with_NDS" bgcolor="red">0</td>
             <td class="calc" bgcolor="red">{{ con_sum.total_with_relations }}</td>
-            <td class="calc" bgcolor="red">{{ con_sum.total_forecast_sap.forecast_total__sum }}</td>
-            <td><input readonly name="sum_byn.jan.forecast_total" value="{{ con_sum.sum_byn.jan.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.feb.forecast_total" value="{{ con_sum.sum_byn.feb.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.mar.forecast_total" value="{{ con_sum.sum_byn.mar.forecast_total }}"></td>
+            <td class="calc_total_forecast" bgcolor="red">{{ con_sum.total_forecast_sap.forecast_total__sum }}</td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.jan.forecast_total" value="{{ con_sum.sum_byn.jan.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.feb.forecast_total" value="{{ con_sum.sum_byn.feb.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.mar.forecast_total" value="{{ con_sum.sum_byn.mar.forecast_total }}"></td>
             <td><input readonly name="sum_byn.1quart.forecast_total" value="{{ con_sum.sum_byn.1quart.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.apr.forecast_total" value="{{ con_sum.sum_byn.apr.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.may.forecast_total" value="{{ con_sum.sum_byn.may.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.jun.forecast_total" value="{{ con_sum.sum_byn.jun.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.apr.forecast_total" value="{{ con_sum.sum_byn.apr.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.may.forecast_total" value="{{ con_sum.sum_byn.may.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.jun.forecast_total" value="{{ con_sum.sum_byn.jun.forecast_total }}"></td>
             <td><input readonly name="sum_byn.2quart.forecast_total" value="{{ con_sum.sum_byn.2quart.forecast_total }}"></td>
             <td><input readonly name="sum_byn.6months.forecast_total" value="{{ con_sum.sum_byn.6months.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.jul.forecast_total" value="{{ con_sum.sum_byn.jul.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.aug.forecast_total" value="{{ con_sum.sum_byn.aug.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.sep.forecast_total" value="{{ con_sum.sum_byn.sep.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.jul.forecast_total" value="{{ con_sum.sum_byn.jul.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.aug.forecast_total" value="{{ con_sum.sum_byn.aug.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.sep.forecast_total" value="{{ con_sum.sum_byn.sep.forecast_total }}"></td>
             <td><input readonly name="sum_byn.3quart.forecast_total" value="{{ con_sum.sum_byn.3quart.forecast_total }}"></td>
             <td><input readonly name="sum_byn.9months.forecast_total" value="{{ con_sum.sum_byn.9months.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.oct.forecast_total" value="{{ con_sum.sum_byn.oct.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.nov.forecast_total" value="{{ con_sum.sum_byn.nov.forecast_total }}"></td>
-            <td><input readonly name="sum_byn.dec.forecast_total" value="{{ con_sum.sum_byn.dec.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.oct.forecast_total" value="{{ con_sum.sum_byn.oct.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.nov.forecast_total" value="{{ con_sum.sum_byn.nov.forecast_total }}"></td>
+            <td><input readonly class="calc_month_forecast" name="sum_byn.dec.forecast_total" value="{{ con_sum.sum_byn.dec.forecast_total }}"></td>
             <td><input readonly name="sum_byn.4quart.forecast_total" value="{{ con_sum.sum_byn.4quart.forecast_total }}"></td>
-            <td class="calc" bgcolor="red">{{ con_sum. }}</td>
+            <td class="calc_economy" bgcolor="red">{{ con_sum. }}</td>
             <td><input readonly name="sum_byn.1quart.economy_total" value="{{ con_sum.sum_byn.1quart.economy_total }}"></td>
             <td><input readonly name="sum_byn.2quart.economy_total" value="{{ con_sum.sum_byn.2quart.economy_total }}"></td>
             <td><input readonly name="sum_byn.3quart.economy_total" value="{{ con_sum.sum_byn.3quart.economy_total }}"></td>
@@ -461,7 +461,23 @@
         });
         total_contract_sum_without_NSD = $(this).find('.total_calc_without_NDS');
         total_contract_sum_without_NSD.text(new_value_contract_sum_without_NSD)
+
+        new_value_contract_sum_with_NSD = new_value_contract_sum_without_NSD * 1.2;
+        cal_contract_with_NDS = $(this).find('.calc_with_NDS');
+        cal_contract_with_NDS.text(new_value_contract_sum_with_NSD);
+        console.log(cal_contract_with_NDS)
+
+        new_toal_forecast = 0;
+        cal_forecast_sum = $(this).find('.calc_month_forecast');
+        cal_forecast_sum.each(function() {
+            new_toal_forecast += parseFloat(this.value);
+        });
+        total_forecast = $(this).find('.calc_total_forecast')
+        total_forecast.text(new_toal_forecast)
+
+
     });
+
 
     $('document').ready(function () {
         let can_do = $('#can_do').val();
