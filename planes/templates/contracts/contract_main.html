@@ -99,8 +99,10 @@
     </tr>
 
     {% for con_sum in contract_and_sum %}
-        <tr id="table_{{ con_sum.contract.id }}">
+        <tr id="table_{{ con_sum.contract }}">
+
             <td>
+                <input class="create_by" value="{{ con_sum.contract.create_by }}">
                 <input type="checkbox" value="{{ con_sum.contract.id }}" class="contract_choice">
                 <a href="{{ con_sum.contract.get_absolute_url }}" id="{{ con_sum.contract.id }}">{{ con_sum.contract.title }}</a>
             </td>
@@ -440,6 +442,7 @@
     <button type="button" id="change_mode_back">Назад</button>
 </div>
 <input hidden id="can_do" value="{{ this_user_can_do }}">
+<input hidden id="this_user" value="{{ user }}">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -555,6 +558,14 @@
                 changes_in = []
                 let test = $('#table_'+checked);
                 cells = test.find('input');
+
+                if ($('#this_user').val() === cells.find('.create_by').val()) {
+                    console.log('tru')
+                }
+                else {
+                    console.log(cells.find('.create_by').value)
+                };
+
                 cells.each(function () {
                     let arr = this.name.split('.');
                     let last = arr[arr.length -1];

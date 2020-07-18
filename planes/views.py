@@ -578,6 +578,7 @@ class ContractFabric(View):
                 new_sum_byn.year = new_sum_rur.year
                 new_sum_byn.save()
             if create_periods_flag:
+
                 for p in self.periods:
                     new_sum_byn = SumsBYN.objects.create(
                         period=p,
