@@ -214,10 +214,8 @@ class ContractView(View):
         if 'id' in this_user_cant_do:
             this_user_cant_do.remove('id')
 
-        print(this_user_can_do)
+        # print(this_user_can_do)
         context['this_user_can_do'] = this_user_can_do
-
-
 
         return render(request,
                       template_name=self.template_name,
@@ -389,6 +387,7 @@ class ContractFabric(View):
                 }
 
                 dic = dict(request.GET)
+                print(dic)
                 for key in dic:
                     if 'up_data' in key:
                         #  print(key)
@@ -404,7 +403,7 @@ class ContractFabric(View):
                         else:
                             val = str(val)
 
-                        if len(info) !=2 :
+                        if len(info) != 2:
                             quart = info[1]
                             this_model = q_dic[info[0]].get(period=quart)
                         else:
