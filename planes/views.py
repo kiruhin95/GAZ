@@ -50,6 +50,34 @@ import numpy as np
 
 
 user_rights = {}
+user_rights['administrator'] = (
+    'id',  # id need course you can create new or etc
+    'title',
+    'contract_mode',
+    'number_ppz',
+    'contract_status',
+    'register_number_SAP',
+    'contract_number',
+    'fact_sign_date',
+    'start_date',
+    'end_time',
+    'counterpart',
+    'related_contract',
+    'finance_cost',
+    'activity_form',
+    'plan_sum_SAP',
+    'contract_sum_without_NDS_BYN',
+    'forecast_total',
+    'economy_total',
+    'fact_total',
+    'purchase_type',
+    'number_PZTRU',
+    'stateASEZ',
+    'plan_load_date_ASEZ',
+    'fact_load_date_ASEZ',
+    'currency',
+    'number_KGG',
+)
 user_rights['lawyers'] = (
     'id',  # id need course you can create new or etc
     'contract_mode',
@@ -73,7 +101,6 @@ user_rights['economists'] = (
     'forecast_total',
     'economy_total',
     'fact_total'
-
 )
 user_rights['spec_ASEZ'] = (
     'id',
@@ -86,6 +113,22 @@ user_rights['spec_ASEZ'] = (
     'currency',
     'number_KGG',
 )
+
+def this_user_rights(request):
+    block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+
+    user_groups = request.user.groups.all()
+    this_user_in_groups = [i.name for i in user_groups]
+    this_user_can_do = []
+    for i in this_user_in_groups:
+        this_user_can_do.extend(user_rights[i])
+
+    this_user_can_do = set(this_user_can_do)
+
+    this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
+    if 'id' in this_user_cant_do:
+        this_user_cant_do.remove('id')
+    return this_user_can_do, this_user_cant_do
 
 
 @login_required
@@ -200,21 +243,21 @@ class ContractView(View):
         context['contract_and_sum'] = contract_and_sum
 
         ''' rights '''
-        block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+        # block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+        #
+        # user_groups = request.user.groups.all()
+        # this_user_in_groups = [i.name for i in user_groups]
+        # this_user_can_do = []
+        # for i in this_user_in_groups:
+        #     this_user_can_do.extend(user_rights[i])
+        #
+        # this_user_can_do = set(this_user_can_do)
+        #
+        # this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
+        # if 'id' in this_user_cant_do:
+        #     this_user_cant_do.remove('id')
+        this_user_can_do, this_user_cant_do = this_user_rights(request=request)
 
-        user_groups = request.user.groups.all()
-        this_user_in_groups = [i.name for i in user_groups]
-        this_user_can_do = []
-        for i in this_user_in_groups:
-            this_user_can_do.extend(user_rights[i])
-
-        this_user_can_do = set(this_user_can_do)
-
-        this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
-        if 'id' in this_user_cant_do:
-            this_user_cant_do.remove('id')
-
-        # print(this_user_can_do)
         context['this_user_can_do'] = this_user_can_do
 
         return render(request,
@@ -477,20 +520,21 @@ class ContractFabric(View):
             finance_cost_flag = False
             activity_form_flag = False
 
-            block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+            # block_list = [getattr(i, 'name') for i in Contract._meta.fields]
+            #
+            # user_groups = request.user.groups.all()
+            # this_user_in_groups = [i.name for i in user_groups]
+            # this_user_can_do = []
+            # for i in this_user_in_groups:
+            #     this_user_can_do.extend(user_rights[i])
+            #
+            # this_user_can_do = set(this_user_can_do)
+            #
+            # this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
+            # if 'id' in this_user_cant_do:
+            #     this_user_cant_do.remove('id')
 
-            user_groups = request.user.groups.all()
-            this_user_in_groups = [i.name for i in user_groups]
-            this_user_can_do = []
-            for i in this_user_in_groups:
-
-                this_user_can_do.extend(user_rights[i])
-
-            this_user_can_do = set(this_user_can_do)
-
-            this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
-            if 'id' in this_user_cant_do:
-                this_user_cant_do.remove('id')
+            this_user_can_do, this_user_cant_do = this_user_rights(request=request)
 
             for right in this_user_cant_do:
                 dic = {}

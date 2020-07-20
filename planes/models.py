@@ -384,6 +384,8 @@ class Contract(models.Model):
     )
     start_date = models.DateField(
         verbose_name="дата начала контракта",
+        null=True,
+        blank=True
     )
     end_time = models.DateField(
         verbose_name="дата окончания",
