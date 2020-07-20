@@ -520,46 +520,34 @@ class ContractFabric(View):
             finance_cost_flag = False
             activity_form_flag = False
 
-            # block_list = [getattr(i, 'name') for i in Contract._meta.fields]
-            #
-            # user_groups = request.user.groups.all()
-            # this_user_in_groups = [i.name for i in user_groups]
-            # this_user_can_do = []
-            # for i in this_user_in_groups:
-            #     this_user_can_do.extend(user_rights[i])
-            #
-            # this_user_can_do = set(this_user_can_do)
-            #
-            # this_user_cant_do = [i for i in block_list if i not in this_user_can_do]
-            # if 'id' in this_user_cant_do:
-            #     this_user_cant_do.remove('id')
-
             this_user_can_do, this_user_cant_do = this_user_rights(request=request)
 
-            for right in this_user_cant_do:
-                dic = {}
-                contract_form.fields[right].widget.attrs['disabled'] = 'disabled'
-                attribute = getattr(Contract.objects.get(id=contract_id), right)
-                dic['name'] = right
-                if attribute == None:
-                    attribute = ''
-                try:
-                    dic['value'] = attribute.id
-                except:
+            if Contract.objects.get(id=contract_id).create_by != request.user:
+                for right in this_user_cant_do:
+                    dic = {}
+                    contract_form.fields[right].widget.attrs['disabled'] = 'disabled'
+                    attribute = getattr(Contract.objects.get(id=contract_id), right)
+                    dic['name'] = right
+                    if attribute == None:
+                        attribute = ''
                     try:
-                        dic['value'] = attribute.isoformat()
+                        dic['value'] = attribute.id
                     except:
-                        dic['value'] = attribute
-                cant_do_this.append(dic)
+                        try:
+                            dic['value'] = attribute.isoformat()
+                        except:
+                            dic['value'] = attribute
+                    cant_do_this.append(dic)
 
-            if not request.user.groups.filter(name='economists').exists():
-                for form in formset_quarts:  # make fields readonly
-                    form.fields['plan_sum_SAP'].widget.attrs['readonly'] = 'readonly'
-                    form.fields['contract_sum_without_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
-                for form in formset_months:  # make fields readonly
-                    form.fields['forecast_total'].widget.attrs['readonly'] = 'readonly'
-                    form.fields['fact_total'].widget.attrs['readonly'] = 'readonly'
-                sum_byn_year_form.fields['contract_sum_with_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
+                if not request.user.groups.filter(name='economists').exists():
+                    for form in formset_quarts:  # make fields readonly
+                        form.fields['plan_sum_SAP'].widget.attrs['readonly'] = 'readonly'
+                        form.fields['contract_sum_without_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
+                    for form in formset_months:  # make fields readonly
+                        form.fields['forecast_total'].widget.attrs['readonly'] = 'readonly'
+                        form.fields['fact_total'].widget.attrs['readonly'] = 'readonly'
+                    sum_byn_year_form.fields['contract_sum_with_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
+
 
         return render(request,
                       template_name=self.create_or_add,
