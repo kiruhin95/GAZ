@@ -275,8 +275,8 @@ class Contract(models.Model):
 
     create_by = models.ForeignKey(
         User,
-        verbose_name="Курирует",
-        on_delete=models.SET_NULL,
+        on_delete = models.DO_NOTHING,
+        verbose_name='Создал/ответственный',
         null=True,
         blank=True
     )
