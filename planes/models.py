@@ -273,6 +273,13 @@ class Contract(models.Model):
         verbose_name = 'Договор'
         verbose_name_plural = 'Договоры'
 
+    create_by = models.ForeignKey(
+        User,
+        verbose_name="Курирует",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     title = models.CharField(
         max_length=150,
         verbose_name="Наименование договора"
