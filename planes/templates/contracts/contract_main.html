@@ -583,7 +583,7 @@
                     });
                 }
                 else {
-                    console.log(test.find('input.create_by').val())
+                    console.log('fals')
                     cells.each(function () {
                         let arr = this.name.split('.');
                         let last = arr[arr.length -1];
@@ -591,18 +591,17 @@
                             $(this).attr('readonly', false);
                         };
                     });
-
-                    $('input').on('change', function() {
-                        changes_in.push(this.name);
-                    });
-                    $('select').on('change', function() {
-                        changes_in.push(this.name);
-                    });
-                    $('.table_actions').toggle();
-                    $('.contract_search_div').toggle();
-                    $('.change_mode_actions').toggle();
-                    $('.choiser_FK').toggle()
                 };
+                $('input').on('change', function() {
+                    changes_in.push(this.name);
+                });
+                $('select').on('change', function() {
+                    changes_in.push(this.name);
+                });
+                $('.table_actions').toggle();
+                $('.contract_search_div').toggle();
+                $('.change_mode_actions').toggle();
+                $('.choiser_FK').toggle();
             };
         });
 
