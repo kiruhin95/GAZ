@@ -112,7 +112,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.finance_cost">
                     <option value="0">{{ con_sum.contract.finance_cost }}</option>
-                    {% if 'finance_cost' in this_user_can_do %}
+                    {% if 'finance_cost' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for fin_cost in all_fin_costs %}
                             <option value="{{ fin_cost.id }}">{{ fin_cost }}</option>
                         {% endfor %}
@@ -126,7 +126,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.activity_form">
                     <option value="0">{{ con_sum.contract.activity_form }}</option>
-                    {% if 'activity_form' in this_user_can_do %}
+                    {% if 'activity_form' in this_user_can_do or con_sum.contract.create_by == user  %}
                         {% for activity_form in all_activity_forms %}
                             <option value="{{ activity_form.id }}">{{ activity_form }}</option>
                         {% endfor %}
@@ -139,7 +139,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.curator">
                     <option value="0">{{ con_sum.contract.curator }}</option>
-                    {% if 'curator' in this_user_can_do %}
+                    {% if 'curator' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for curator in all_curators %}
                             <option value="{{ curator.id }}">{{ curator }}</option>
                         {% endfor %}
@@ -152,7 +152,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.contract_type">
                     <option value="0">{{ con_sum.contract.contract_type }}</option>
-                    {% if 'contract_type' in this_user_can_do %}
+                    {% if 'contract_type' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for contract_type in all_contract_types %}
                             <option value="{{ contract_type.id }}">{{ contract_type }}</option>
                         {% endfor %}
@@ -165,7 +165,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.contract_mode">
                     <option value="0">{{ con_sum.contract.contract_mode }}</option>
-                    {% if 'contract_mode' in this_user_can_do %}
+                    {% if 'contract_mode' in this_user_can_do or con_sum.contract.create_by == user  %}
                         {% for contract_mode in all_contract_modes %}
                             <option value="{{ contract_mode.id }}">{{ contract_mode }}</option>
                         {% endfor %}
@@ -178,7 +178,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.purchase_type">
                     <option value="0">{{ con_sum.contract.purchase_type }}</option>
-                    {% if 'purchase_type' in this_user_can_do %}
+                    {% if 'purchase_type' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for purchase_type in all_purchase_types %}
                             <option value="{{ purchase_type.id }}">{{ purchase_type }}</option>
                         {% endfor %}
@@ -192,7 +192,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.stateASEZ">
                     <option value="0">{{ con_sum.contract.stateASEZ }}</option>
-                    {% if 'stateASEZ' in this_user_can_do %}
+                    {% if 'stateASEZ' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for stateASEZ in all_state_asez %}
                             <option value="{{ stateASEZ.id }}">{{ stateASEZ }}</option>
                         {% endfor %}
@@ -206,7 +206,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.number_PZTRU">
                     <option value="0">{{ con_sum.contract.number_PZTRU }}</option>
-                    {% if 'number_PZTRU' in this_user_can_do %}
+                    {% if 'number_PZTRU' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for number_PZTRU in all_pztru %}
                             <option value="{{ number_PZTRU.id }}">{{ number_PZTRU }}</option>
                         {% endfor %}
@@ -219,7 +219,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.contract_status">
                     <option value="0">{{ con_sum.contract.contract_status }}</option>
-                    {% if 'contract_status' in this_user_can_do %}
+                    {% if 'contract_status' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for contract_status in all_cont_suatus %}
                             <option value="{{ contract_status.id }}">{{ contract_status }}</option>
                         {% endfor %}
@@ -237,7 +237,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="sum_rur.currency">
                     <option value="0">{{ con_sum.sum_rur.currency }}</option>
-                    {% if 'currency' in this_user_can_do %}
+                    {% if 'currency' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for currency in all_currenses %}
                             <option value="{{ currency.id }}">{{ currency }}</option>
                         {% endfor %}
@@ -263,7 +263,7 @@
                 </div>
                 <select hidden class="choiser_FK" name="contract.counterpart">
                     <option value="0">{{ con_sum.contract.counterpart }}</option>
-                    {% if 'counterpart' in this_user_can_do %}
+                    {% if 'counterpart' in this_user_can_do or con_sum.contract.create_by == user %}
                         {% for counterpart in all_counterparts %}
                             <option value="{{ counterpart.id }}">{{ counterpart }}</option>
                         {% endfor %}
@@ -577,13 +577,13 @@
                 cells = test.find('input');
 
                 if ($('#this_user').val() === test.find('input.create_by').val()) {
-                    console.log('tru')
+                    console.log(cells)
                     cells.each(function () {
                         $(this).attr('readonly', false);
                     });
                 }
                 else {
-                    console.log('fals')
+                    console.log(cells)
                     cells.each(function () {
                         let arr = this.name.split('.');
                         let last = arr[arr.length -1];
