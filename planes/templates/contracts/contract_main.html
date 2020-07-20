@@ -102,7 +102,7 @@
         <tr id="table_{{ con_sum.contract.id }}">
 
             <td>
-                <input class="create_by" value="{{ con_sum.contract.create_by }}">
+                <input readonly class="create_by" value="{{ con_sum.contract.create_by }}">
                 <input type="checkbox" value="{{ con_sum.contract.id }}" class="contract_choice">
                 <a href="{{ con_sum.contract.get_absolute_url }}" id="{{ con_sum.contract.id }}">{{ con_sum.contract.title }}</a>
             </td>
@@ -576,29 +576,33 @@
                 let test = $('#table_'+checked);
                 cells = test.find('input');
 
-                if ($('#this_user').val() === cells.find('.create_by').val()) {
+                if ($('#this_user').val() === test.find('input.create_by').val()) {
                     console.log('tru')
+                    cells.each(function () {
+                        $(this).attr('readonly', false);
+                    });
                 }
                 else {
-                    console.log(cells)
+                    console.log(test.find('input.create_by').val())
+                    cells.each(function () {
+                        let arr = this.name.split('.');
+                        let last = arr[arr.length -1];
+                        if ($.inArray(last, can_do) !== -1) {
+                            $(this).attr('readonly', false);
+                        };
+                    });
+
+                    $('input').on('change', function() {
+                        changes_in.push(this.name);
+                    });
+                    $('select').on('change', function() {
+                        changes_in.push(this.name);
+                    });
+                    $('.table_actions').toggle();
+                    $('.contract_search_div').toggle();
+                    $('.change_mode_actions').toggle();
+                    $('.choiser_FK').toggle()
                 };
-
-                cells.each(function () {
-                    $(this).attr('readonly', false);
-                });
-                $('input').on('change', function() {
-                    changes_in.push(this.name);
-                });
-                $('select').on('change', function() {
-                    changes_in.push(this.name);
-<!--                    console.log(this);-->
-                });
-
-
-                $('.table_actions').toggle();
-                $('.contract_search_div').toggle();
-                $('.change_mode_actions').toggle();
-                $('.choiser_FK').toggle()
             };
         });
 
