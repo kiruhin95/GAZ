@@ -333,7 +333,7 @@
 </table>
 <div class="table_actions">
     <button type="button" id="change_mode_ok">Редактировать договор</button>
-
+    <button type="button" id="change_in_card">Редактировать в карточке</button>
     <a href="{% url 'planes:create_contract' %}">Создать договор</a>
     <br>
     <button class="delete_contract">Удалить контракты</button>
@@ -342,8 +342,8 @@
     <a href="{% url 'planes:excel_parser' %}">Импортировать excel</a>
 </div>
 <br><br>
-<div class="contract_search_div">
 
+<div class="contract_search_div">
     <form action="">
         <input type="search" name="search_name" placeholder="Введите наименование...">
         <br>
@@ -518,6 +518,22 @@
     $('document').ready(function () {
         let can_do = $('#can_do').val();
         can_do = can_do.replace('{', '').replace('}', '').replace(/'/g, '').replace(/ /g, '').split(',');
+
+        $('#change_in_card').on('click', function () {
+            let checked = []
+            $('input:checkbox:checked').each(function() {
+                checked.push($(this).val());
+            });
+            if (checked.length != 1) {
+                alert('Выбрано более одного контракта для редактирования');
+            }
+            else {
+                contract_id = checked;
+                url = '/plane/contracts/change_contract/' + contract_id;
+                window.location.href = url;
+            }
+
+        });
 
         $('.contract_choice').on('click', function (chose) {
             console.log(this.value);
