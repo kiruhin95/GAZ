@@ -99,7 +99,7 @@
     </tr>
 
     {% for con_sum in contract_and_sum %}
-        <tr id="table_{{ con_sum.contract }}">
+        <tr id="table_{{ con_sum.contract.id }}">
 
             <td>
                 <input class="create_by" value="{{ con_sum.contract.create_by }}">
