@@ -80,6 +80,7 @@ user_rights['administrator'] = (
 )
 user_rights['lawyers'] = (
     'id',  # id need course you can create new or etc
+    'title',
     'contract_mode',
     'number_ppz',
     'contract_status',
@@ -104,6 +105,7 @@ user_rights['economists'] = (
 )
 user_rights['spec_ASEZ'] = (
     'id',
+    'title',
     'purchase_type',
     'number_ppz',
     'number_PZTRU',
@@ -522,32 +524,32 @@ class ContractFabric(View):
 
             this_user_can_do, this_user_cant_do = this_user_rights(request=request)
 
-            if Contract.objects.get(id=contract_id).create_by != request.user:
-                for right in this_user_cant_do:
-                    dic = {}
-                    contract_form.fields[right].widget.attrs['disabled'] = 'disabled'
-                    attribute = getattr(Contract.objects.get(id=contract_id), right)
-                    dic['name'] = right
-                    if attribute == None:
-                        attribute = ''
-                    try:
-                        dic['value'] = attribute.id
-                    except:
+            if 'copy_contract' not in request.path:
+                if Contract.objects.get(id=contract_id).create_by != request.user:
+                    for right in this_user_cant_do:
+                        dic = {}
+                        contract_form.fields[right].widget.attrs['disabled'] = 'disabled'
+                        attribute = getattr(Contract.objects.get(id=contract_id), right)
+                        dic['name'] = right
+                        if attribute == None:
+                            attribute = ''
                         try:
-                            dic['value'] = attribute.isoformat()
+                            dic['value'] = attribute.id
                         except:
-                            dic['value'] = attribute
-                    cant_do_this.append(dic)
+                            try:
+                                dic['value'] = attribute.isoformat()
+                            except:
+                                dic['value'] = attribute
+                        cant_do_this.append(dic)
 
-                if not request.user.groups.filter(name='economists').exists():
-                    for form in formset_quarts:  # make fields readonly
-                        form.fields['plan_sum_SAP'].widget.attrs['readonly'] = 'readonly'
-                        form.fields['contract_sum_without_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
-                    for form in formset_months:  # make fields readonly
-                        form.fields['forecast_total'].widget.attrs['readonly'] = 'readonly'
-                        form.fields['fact_total'].widget.attrs['readonly'] = 'readonly'
-                    sum_byn_year_form.fields['contract_sum_with_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
-
+                    if not request.user.groups.filter(name='economists').exists():
+                        for form in formset_quarts:  # make fields readonly
+                            form.fields['plan_sum_SAP'].widget.attrs['readonly'] = 'readonly'
+                            form.fields['contract_sum_without_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
+                        for form in formset_months:  # make fields readonly
+                            form.fields['forecast_total'].widget.attrs['readonly'] = 'readonly'
+                            form.fields['fact_total'].widget.attrs['readonly'] = 'readonly'
+                        sum_byn_year_form.fields['contract_sum_with_NDS_BYN'].widget.attrs['readonly'] = 'readonly'
 
         return render(request,
                       template_name=self.create_or_add,

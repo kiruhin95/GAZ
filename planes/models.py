@@ -565,14 +565,14 @@ class SumsBYN(models.Model):
         decimal_places=2,
         max_digits=12,
         default=0,
-        help_text='1-4 квартал - вручную; год, 6 месяцев, 9 месяцев - расчетные'
+       # help_text='1-4 квартал - вручную; год, 6 месяцев, 9 месяцев - расчетные'
     )
     contract_sum_without_NDS_BYN = models.DecimalField(
         verbose_name="Сумма всего договора без НДС",
         default=0,
         decimal_places=2,
         max_digits=12,
-        help_text='1-4 квартал - вручную, год- расчетное'
+       # help_text='1-4 квартал - вручную, год- расчетное'
     )
     contract_sum_with_NDS_BYN = models.DecimalField(
         verbose_name="Сумма договора с НДС бел.руб.",
@@ -581,7 +581,7 @@ class SumsBYN(models.Model):
         decimal_places=2,
         max_digits=12,
         default=0,
-        help_text='Год - вручную'
+       # help_text='Год - вручную'
     )
     contract_total_sum_with_sub_BYN = models.DecimalField(
         verbose_name='Общая сумма договора всего с доп соглашениями, б.р. без ндс',
@@ -590,7 +590,7 @@ class SumsBYN(models.Model):
         decimal_places=2,
         max_digits=12,
         default=0,
-        help_text='Год - расчетное'
+      #  help_text='Год - расчетное'
     )
     forecast_total = models.DecimalField(
         verbose_name='Прогноз',
@@ -599,7 +599,7 @@ class SumsBYN(models.Model):
         decimal_places=2,
         max_digits=12,
         default=0,
-        help_text='Январь-декабрь - вручную, 1-4 квартал, год, 9 месяцев - расчетные'
+      #  help_text='Январь-декабрь - вручную, 1-4 квартал, год, 9 месяцев - расчетные'
     )
     economy_total = models.DecimalField(
         verbose_name='Экономия по заключенному договору, всего',
@@ -608,7 +608,7 @@ class SumsBYN(models.Model):
         decimal_places=2,
         max_digits=12,
         default=0,
-        help_text='1-4 квартал, год - расчетные'
+       # help_text='1-4 квартал, год - расчетные'
     )
     fact_total = models.DecimalField(
         verbose_name='Факт, всего',
