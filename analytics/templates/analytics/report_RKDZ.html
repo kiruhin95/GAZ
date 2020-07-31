@@ -6,15 +6,17 @@
 
 <div class="headline">
     <h1>Отчет RDKZ</h1>
+    <h2 align="right"><a href="{% url 'analytics:RKDZ_template' %}">Просмотр шаблона</a></h2>
 </div>
 
 <div id="data-container">
+
 <form action="{% url 'analytics:report_RKDZ_table'  %}" method="get">
 {{form.as_ul}}
 
     <div class="buttons-container">
         <input type="submit" class="form_submit button" value="Сформировать">
-        <button class="button" onclick="history.back()">Назад</button>
+        <button class="button" type="button" onclick="history.back()">Назад</button>
     </div>
 
 </form>

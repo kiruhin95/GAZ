@@ -1,14 +1,22 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static '/planes/js/script_form_year.js' %}"></script>
-</head>
-<body>
 
+{% block content %}
+</head>
+
+<!--<style>-->
+<!--   .bottom_buttons {-->
+<!--    position: fixed;-->
+<!--    right: 40%; /* Расстояние от правого края окна браузера */-->
+<!--    top: 95%; /* Расстояние сверху */-->
+<!--    padding: 10px; /* Поля вокруг текста */-->
+<!--    background: #1b86c0; /* Цвет фона */-->
+<!--    border: 1px solid #333; /* Параметры рамки */-->
+<!--   }-->
+
+<!--  </style>-->
+
+<body>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -44,10 +52,10 @@
     <table>
     {{ rur_form }}
     </table>
-
-    <button type="submit">ОК</button>
+    <div class="bottom_buttons">
+        <button type="submit">ОК</button>
+        <button type="button" onclick="javascript:history.back()">Отмена</button>
+    </div>
 </form>
 
-
-</body>
-</html>
+{% endblock %}

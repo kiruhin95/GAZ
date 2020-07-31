@@ -26,7 +26,6 @@ $("document").ready(function () {
                 'select_year': selectYear,
                 'select_cost':selectFinanceCost,
                 'select_curator': selectCurator,
-//                'select_report': 1
                 'select_contractType': selectContractType,
                 'select_contractStatus': selectContractStatus
 
@@ -35,10 +34,12 @@ $("document").ready(function () {
             "success": function(data) {
                 $("#reportName").html($(data).find("#reportName"));
                 $("#table_id").html($(data).find("#table_id"));
+                $("#myChart").empty();
                 $("#scriptIDmyChart").html($(data).find("#scriptIDmyChart"));
                 $("#scriptIDcontractCountAll").html($(data).find("#scriptIDcontractCountAll"));
                 $("#scriptIDcontractCountSub").html($(data).find("#scriptIDcontractCountSub"));
                 $("#scriptIDcontractCountCentre").html($(data).find("#scriptIDcontractCountCentre"));
+//                $("#myChart").empty();
                 $("#myChart").html($(data).find("#myChart"));
                 $("#contractCountAll").html($(data).find("#contractCountAll"));
                 $("#contractCountSub").html($(data).find("#contractCountSub"));

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="headline">
+    <h1>Отчет RDKZ</h1>
+</div>
+
+
+
+<div id="data-container">
+<table id="RDKZ" class="table table-responsive sort_col_table dragging sorted_table" style="font-size:1vw; " border="1" >
+
+    <tr>
+        {% for i in len%}
+        <th style="word-wrap:break-word;font-size: 0.7vw; " >{{i}}</th>
+        {% endfor%}
+    </tr>
+<thead class="sorted_head">
+<tr>
+            <th style="word-wrap:break-word;font-size: 0.7vw;">№ п/п</th>
+        {% for head in RKDZ%}
+            <th style="word-wrap:break-word;font-size: 0.7vw; " class="placeholder dragged">{{head.0}}</th>
+        {%endfor%}
+</tr>
+</thead>
+    <tbody>
+
+    <tr>
+        <td style="font-size: 0.7vw;"></td>
+        {% for head in RKDZ%}
+        <td style="font-size: 0.7vw;">{{head.1}}</td>
+        {%endfor%}
+    </tr>
+
+    </tbody>
+
+</table>
+</div>
+
+
+<div class="buttons-container">
+    <a href="{% url 'analytics:RKDZ_add' %}"><button class="button" >Добавить графу</button></a>
+    <button class="button" onclick="history.back()">Назад</button>
+</div>
+
+<script src="{%static 'analytics/js/jquery.min.js'%}" ></script>
+<script src="{%static 'analytics/js/jquery-sortable.js'%}" ></script>
+
+<link rel="stylesheet" href="{%static 'analytics/css/analytics.css'%}">
+<script src="{%static 'analytics/js/scriptAnalytics.js'%}" ></script>
+
+
+{% endblock content %}
